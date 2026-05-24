@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  --color-wine: #4A0F1F;
+  --color-ivory: #F8F4F0;
+  --color-beige: #EDE4D8;
+  --color-rosegold: #D4A8A1;
+  --color-champagne: #E8D5B8;
+  --color-blush: #E8C7C8;
+  --color-charcoal: #2F2A2A;
+  --font-serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --font-display: "DM Serif Display", "Cormorant Garamond", Georgia, serif;
+  --font-sans: Outfit, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --shadow-luxury: 0 28px 80px rgba(74, 15, 31, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
+  background: #f8f4f0;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  color: #2f2a2a;
+  background:
+    radial-gradient(circle at 16% 10%, rgba(232, 199, 200, 0.34), transparent 30vw),
+    linear-gradient(180deg, #fffaf7 0%, #f8f4f0 42%, #ede4d8 100%);
+  font-family: Outfit, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+::selection {
+  background: #4a0f1f;
+  color: #f8f4f0;
+}
+
+a,
+button,
+input,
+textarea {
+  outline-color: #d4a8a1;
+}
+
+.font-cormorant {
+  font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+}
+
+.font-dm {
+  font-family: "DM Serif Display", "Cormorant Garamond", Georgia, serif;
+}
+
+.luxury-line {
+  background: linear-gradient(90deg, transparent, rgba(212, 168, 161, 0.85), transparent);
+  height: 1px;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.glass-nav {
+  background: rgba(248, 244, 240, 0.72);
+  border-bottom: 1px solid rgba(232, 213, 184, 0.54);
+  backdrop-filter: blur(22px);
+}
+
+.masonry {
+  column-count: 1;
+  column-gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .masonry {
+    column-count: 3;
+  }
+}
+
+@media (min-width: 1280px) {
+  .masonry {
+    column-count: 4;
+  }
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
