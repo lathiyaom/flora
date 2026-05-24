@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
@@ -19,29 +19,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-      - run: npm run build
+      - name: Build Next.js
+        run: npm run build
 
-      - run: |
+      - name: Prepare static export folder
+        run: |
           rm -rf out
           mkdir -p out
-          cp .next/server/app/index.html out/index.html
-          if [ -f .next/server/app/_not-found.html ]; then cp .next/server/app/_not-found.html out/404.html; fi
-          mkdir -p out/_next/static
-          cp -R .next/static/* out/_next/static/
+          cp -R .next/server/app/* out/
+          mkdir -p out/_next
+          cp -R .next/static/* out/_next/
           cp -R public/* out/
         shell: bash
 
-      - uses: actions/configure-pages@v5
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Upload static export
+        uses: actions/upload-pages-artifact@v3
         with:
           path: out
 
@@ -53,5 +59,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - id: deployment
+      - name: Deploy
+        id: deployment
         uses: actions/deploy-pages@v4

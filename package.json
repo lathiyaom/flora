@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "node generate-media-list.js && next dev",
-    "build": "node generate-media-list.js && next build",
+    "prebuild": "node generate-media-list.js",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
