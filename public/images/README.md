@@ -11,6 +11,7 @@ Recommended files:
 - `collections/tender-moments.webp`
 - `collections/creators-studio.webp`
 - `collections/bespoke-creations.webp`
+- 
 - `collections/bespoke-customizer.webp`
 - `wedding/eternal-vows.webp`
 - `corporate/timeless-gestures.webp`
