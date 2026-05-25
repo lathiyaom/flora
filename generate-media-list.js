@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PUBLIC_DIR = path.join(__dirname, 'public');
+const BASE_PATH = '/flora';
 const IMAGES_DIR = path.join(PUBLIC_DIR, 'images');
 const OUTPUT_FILE = path.join(__dirname, 'data', 'media-list.ts');
 
@@ -74,8 +75,8 @@ function scanDir(dir, fileList = []) {
         // Skip README files
         if (file.toLowerCase().startsWith('readme')) continue;
 
-        // Relative path from public directory
-        const relativePath = '/' + path.relative(PUBLIC_DIR, filePath).replace(/\\/g, '/');
+        // Relative path from public directory with GitHub Pages base path
+        const relativePath = BASE_PATH + '/' + path.relative(PUBLIC_DIR, filePath).replace(/\\/g, '/');
 
         // Determine category based on immediate subfolder under images/
         const subPath = path.relative(IMAGES_DIR, filePath);

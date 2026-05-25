@@ -29,22 +29,32 @@ npm install
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the site.
+Open [http://localhost:3000/flora](http://localhost:3000/flora) in your browser to view the site locally.
 
-### 3. Build & Export the Static Site
+### 3. Build the Static Site for GitHub Pages
 ```bash
 npm run build
-npm run export
 ```
-This command compiles the Next.js application and generates a fully-optimized static bundle in the `out/` directory.
+This command compiles the Next.js application and exports the site as a fully-optimized static bundle in the `out/` directory.
 
-> Note: If you are deploying to GitHub Pages, the site content must come from the exported static files in `out/` (or the `docs/` folder / `gh-pages` branch). If only the repository is published without deploying `out/`, GitHub Pages will show the repository README instead of your website.
+> Note: Because this site is deployed to GitHub Pages under `https://lathiyaom.github.io/flora/`, the app uses `basePath: '/flora'` in `next.config.ts` and the generated static output must be published from the `out/` folder.
 
 ### 4. Preview the Static Export
 To test the exported static site locally, you can use a simple static server:
 ```bash
 npx serve out
 ```
+
+---
+
+## GitHub Pages Deployment
+1. Push to the `main` branch.
+2. Ensure GitHub Pages source is set to **GitHub Actions** in `Settings > Pages`.
+3. The workflow in `.github/workflows/deploy.yml` will build the site and deploy the `out/` folder.
+4. Your live URL will be:
+   `https://lathiyaom.github.io/flora/`
+
+> Important: GitHub Pages must deploy from the exported static output. If it is serving the repo root instead, it will show `README.md` rather than your website.
 
 ---
 
@@ -138,9 +148,9 @@ If you want to use a JPEG file named `new-hero-bg.jpg` instead of the default `.
 ```typescript
 // data/site.ts (around line 20)
 export const imagePaths = {
-  hero: "/images/hero/new-hero-bg.jpg", // updated path
-  story: "/images/story/artisan-hands.webp",
-  customizer: "/images/collections/bespoke-customizer.webp"
+  hero: "/flora/images/hero/new-hero-bg.jpg", // updated path
+  story: "/flora/images/story/artisan-hands.webp",
+  customizer: "/flora/images/collections/bespoke-customizer.webp"
 };
 ```
 
@@ -154,7 +164,7 @@ export const collections = [
     slug: "romantic-whispers",
     price: "From $95",
     tone: "Soft blush declarations for anniversaries, proposals, and everyday devotion.",
-    image: "/images/collections/my-new-rose-photo.webp" // updated path
+    image: "/flora/images/collections/my-new-rose-photo.webp" // updated path
   },
   // ...
 ];

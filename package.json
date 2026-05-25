@@ -6,7 +6,6 @@
     "dev": "node generate-media-list.js && next dev",
     "prebuild": "node generate-media-list.js",
     "build": "next build",
-    "export": "next export",
     "start": "next start",
     "lint": "next lint"
   },
