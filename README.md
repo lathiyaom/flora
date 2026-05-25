@@ -34,8 +34,11 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 ### 3. Build & Export the Static Site
 ```bash
 npm run build
+npm run export
 ```
-This command compiles the Next.js application and generates a fully-optimized, static bundle in the `out/` directory.
+This command compiles the Next.js application and generates a fully-optimized static bundle in the `out/` directory.
+
+> Note: If you are deploying to GitHub Pages, the site content must come from the exported static files in `out/` (or the `docs/` folder / `gh-pages` branch). If only the repository is published without deploying `out/`, GitHub Pages will show the repository README instead of your website.
 
 ### 4. Preview the Static Export
 To test the exported static site locally, you can use a simple static server:
