@@ -1,12 +1,16 @@
 "use client";
 
-import { motion, useScroll, useSpring } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { brand } from "@/data/brand";
 import { navItems, socials } from "@/data/site";
+import { useActiveSection } from "@/hooks/use-active-section";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { luxuryEase } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+
+const SECTION_IDS = ["story", "collections", "gallery", "commissions", "contact"];
 
 export function SiteChrome({ children }: { children: ReactNode }) {
   const reduced = usePrefersReducedMotion();
@@ -14,6 +18,17 @@ export function SiteChrome({ children }: { children: ReactNode }) {
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const activeSection = useActiveSection(SECTION_IDS);
+
+  const navWithActive = useMemo(
+    () =>
+      navItems.map((item) => ({
+        ...item,
+        sectionId: item.href.replace("#", ""),
+        isActive: item.href !== "#" && activeSection === item.href.replace("#", "")
+      })),
+    [activeSection]
+  );
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -50,15 +65,22 @@ export function SiteChrome({ children }: { children: ReactNode }) {
           className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 md:h-20 md:px-8"
           aria-label="Primary"
         >
-          <a href="#" className="font-cormorant text-2xl font-semibold tracking-tight text-wine md:text-3xl">
+          <a
+            href="#"
+            className="font-cormorant text-2xl font-semibold tracking-tight text-wine transition hover:opacity-80 md:text-3xl"
+          >
             {brand.name}
           </a>
-          <div className="hidden items-center gap-9 md:flex">
-            {navItems.map((item) => (
+          <div className="hidden items-center gap-8 md:flex">
+            {navWithActive.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="text-sm font-medium tracking-wide text-charcoal/68 transition-colors duration-300 hover:text-wine"
+                className={cn(
+                  "link-luxury text-sm font-medium tracking-wide transition-colors duration-300",
+                  item.isActive ? "text-wine" : "text-charcoal/60 hover:text-wine"
+                )}
+                aria-current={item.isActive ? "location" : undefined}
               >
                 {item.label}
               </a>
@@ -81,27 +103,41 @@ export function SiteChrome({ children }: { children: ReactNode }) {
             {open ? <X size={18} /> : <Menu size={18} />}
           </button>
         </nav>
-        {open && (
-          <div id="mobile-nav" className="border-t border-champagne/50 bg-ivory/95 px-5 pb-8 pt-2 backdrop-blur-xl md:hidden">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="block border-b border-wine/8 py-4 text-base font-medium text-wine"
-              >
-                {item.label}
-              </a>
-            ))}
-            <a
-              href="#corporate"
-              onClick={() => setOpen(false)}
-              className="mt-4 block rounded-full bg-wine py-3.5 text-center text-sm font-semibold text-ivory"
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              id="mobile-nav"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.4, ease: luxuryEase }}
+              className="overflow-hidden border-t border-champagne/50 bg-ivory/95 backdrop-blur-xl md:hidden"
             >
-              Bespoke Enquiry
-            </a>
-          </div>
-        )}
+              <div className="px-5 pb-8 pt-2">
+                {navWithActive.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "block border-b border-wine/8 py-4 text-base font-medium",
+                      item.isActive ? "text-wine" : "text-charcoal/75"
+                    )}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+                <a
+                  href="#corporate"
+                  onClick={() => setOpen(false)}
+                  className="mt-4 block rounded-full bg-wine py-3.5 text-center text-sm font-semibold text-ivory"
+                >
+                  Bespoke Enquiry
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
       {!reduced && <DesktopCursor />}
       <main id="main">{children}</main>
@@ -110,13 +146,18 @@ export function SiteChrome({ children }: { children: ReactNode }) {
           href={whatsapp.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-wine text-ivory shadow-luxury transition duration-300 hover:scale-[1.03] hover:shadow-luxury-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosegold md:bottom-8 md:right-8"
+          className="group fixed bottom-5 right-5 z-50 flex items-center gap-0 overflow-hidden rounded-full bg-wine text-ivory shadow-luxury transition-all duration-500 hover:gap-3 hover:shadow-luxury-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosegold md:bottom-8 md:right-8"
           aria-label="Chat on WhatsApp"
         >
-          {(() => {
-            const Icon = whatsapp.icon;
-            return <Icon size={22} />;
-          })()}
+          <span className="grid h-14 w-14 shrink-0 place-items-center">
+            {(() => {
+              const Icon = whatsapp.icon;
+              return <Icon size={22} />;
+            })()}
+          </span>
+          <span className="max-w-0 overflow-hidden whitespace-nowrap pr-0 text-xs font-semibold uppercase tracking-[0.2em] opacity-0 transition-all duration-500 group-hover:max-w-[9rem] group-hover:pr-5 group-hover:opacity-100">
+            Atelier chat
+          </span>
         </a>
       )}
     </>
@@ -131,7 +172,7 @@ function DesktopCursor() {
     let id = 0;
     const move = (event: MouseEvent) => {
       const next = { x: event.clientX, y: event.clientY, id: id++ };
-      setPoints((items) => [...items.slice(-5), next]);
+      setPoints((items) => [...items.slice(-4), next]);
     };
     window.addEventListener("mousemove", move);
     return () => window.removeEventListener("mousemove", move);
@@ -142,16 +183,16 @@ function DesktopCursor() {
       {points.map((point, index) => (
         <motion.span
           key={point.id}
-          initial={{ opacity: 0.28, scale: 0.15 }}
-          animate={{ opacity: 0, scale: 1.4 }}
-          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute h-1.5 w-1.5 rounded-full bg-rosegold/80"
+          initial={{ opacity: 0.24, scale: 0.12 }}
+          animate={{ opacity: 0, scale: 1.2 }}
+          transition={{ duration: 0.7, ease: luxuryEase }}
+          className="absolute h-1.5 w-1.5 rounded-full bg-rosegold/75"
           style={{
             left: point.x,
             top: point.y,
             translateX: "-50%",
             translateY: "-50%",
-            filter: `blur(${index * 0.35}px)`
+            filter: `blur(${index * 0.3}px)`
           }}
         />
       ))}

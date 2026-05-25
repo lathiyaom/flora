@@ -14,7 +14,12 @@ export function Testimonials() {
   const active = testimonials[index];
 
   return (
-    <Section eyebrow="Love stories" title="Kept by the people who gave them.">
+    <Section
+      eyebrow="Love stories"
+      title="Kept by the people who gave them."
+      subtitle="Real gestures, remembered long after the day."
+      tone="ivory"
+    >
       <div className="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
         <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] shadow-luxury">
           <AnimatePresence mode="wait">
@@ -55,7 +60,22 @@ export function Testimonials() {
               </footer>
             </motion.div>
           </AnimatePresence>
-          <div className="mt-10 flex gap-3" role="group" aria-label="Testimonial navigation">
+          <div className="mt-8 flex gap-2" role="tablist" aria-label="Select testimonial">
+            {testimonials.map((t, i) => (
+              <button
+                key={t.name}
+                type="button"
+                role="tab"
+                aria-selected={i === index}
+                aria-label={`Show testimonial from ${t.name}`}
+                onClick={() => setIndex(i)}
+                className={`h-1.5 rounded-full transition-all duration-500 ${
+                  i === index ? "w-8 bg-wine" : "w-3 bg-wine/20 hover:bg-wine/40"
+                }`}
+              />
+            ))}
+          </div>
+          <div className="mt-8 flex gap-3" role="group" aria-label="Testimonial navigation">
             <button
               type="button"
               aria-label="Previous testimonial"

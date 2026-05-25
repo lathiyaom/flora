@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import { JsonLd } from "@/components/json-ld";
 import { SiteChrome } from "@/components/site-chrome";
 import { About } from "@/components/sections/about";
+import { AtelierMarquee } from "@/components/sections/atelier-marquee";
 import { Contact } from "@/components/sections/contact";
 import { CorporateEnquiry } from "@/components/sections/corporate-enquiry";
 import { CreationProcess } from "@/components/sections/creation-process";
@@ -14,13 +15,10 @@ import { Commissions } from "@/components/sections/commissions";
 import { SignatureCollections } from "@/components/sections/signature-collections";
 import { Testimonials } from "@/components/sections/testimonials";
 import { WhyEternalPetal } from "@/components/sections/why-eternalpetal";
+import { GallerySkeleton } from "@/components/ui/gallery-skeleton";
 
 const Gallery = dynamic(() => import("@/components/sections/gallery").then((m) => m.Gallery), {
-  loading: () => (
-    <section className="section-shell" aria-hidden>
-      <div className="section-inner min-h-[480px] animate-pulse rounded-[1.5rem] bg-white/40" />
-    </section>
-  )
+  loading: () => <GallerySkeleton />
 });
 
 export default function Home() {
@@ -28,6 +26,7 @@ export default function Home() {
     <SiteChrome>
       <JsonLd />
       <Hero />
+      <AtelierMarquee />
       <About />
       <SignatureCollections />
       <Gallery />

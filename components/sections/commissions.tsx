@@ -12,11 +12,9 @@ export function Commissions() {
       id="commissions"
       eyebrow="Commissions"
       title="Every piece is composed for your story."
+      subtitle="Each bouquet is handmade to order. Share the occasion, palette, and feeling—the atelier will guide you from first conversation to finished keepsake."
+      tone="alt"
     >
-      <p className="-mt-6 mb-12 max-w-2xl text-lg leading-relaxed text-charcoal/68">
-        Each bouquet is handmade to order. Share the occasion, palette, and feeling—the atelier will guide you from
-        first conversation to finished keepsake.
-      </p>
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         {commissions.map((tier, index) => (
           <Reveal

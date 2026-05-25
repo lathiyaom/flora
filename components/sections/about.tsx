@@ -6,7 +6,12 @@ import { Section } from "@/components/ui/section";
 
 export function About() {
   return (
-    <Section id="story" eyebrow="From our hands to your heart" title="A bouquet should remember what the day felt like.">
+    <Section
+      id="story"
+      eyebrow="From our hands to your heart"
+      title="A bouquet should remember what the day felt like."
+      subtitle="Slow craft, intimate detail, and compositions made to hold meaning—not just beauty."
+    >
       <div className="grid items-center gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
         <Reveal className="space-y-7 text-lg leading-[1.8] text-charcoal/72">
           <p>

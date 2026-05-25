@@ -1,13 +1,14 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, MessageCircle, Play, X } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { ChevronDown, ChevronLeft, ChevronRight, MessageCircle, Play, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { brand } from "@/data/brand";
 import type { MediaItem } from "@/data/media-list";
 import { mediaItems } from "@/data/media-list";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { galleryInquiry } from "@/lib/whatsapp";
+import { luxuryEase } from "@/lib/motion";
 import { MediaPlayer } from "@/components/ui/media-player";
 import { Section } from "@/components/ui/section";
 import { cn } from "@/lib/utils";
@@ -30,25 +31,43 @@ export function Gallery() {
   const [active, setActive] = useState<MediaItem | null>(null);
   const [visibleCount, setVisibleCount] = useState(12);
 
-  const filteredItems = mediaItems.filter((item) => {
-    if (activeTab === "all") return true;
-    if (activeTab === "videos") return item.type === "video";
-    return item.category === activeTab;
-  });
+  const filteredItems = useMemo(
+    () =>
+      mediaItems.filter((item) => {
+        if (activeTab === "all") return true;
+        if (activeTab === "videos") return item.type === "video";
+        return item.category === activeTab;
+      }),
+    [activeTab]
+  );
 
   const visibleItems = filteredItems.slice(0, visibleCount);
+
+  const activeIndex = active ? filteredItems.findIndex((i) => i.src === active.src) : -1;
 
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);
     setVisibleCount(12);
+    setActive(null);
   };
 
   const closeLightbox = useCallback(() => setActive(null), []);
+
+  const goTo = useCallback(
+    (delta: number) => {
+      if (activeIndex < 0 || !filteredItems.length) return;
+      const next = (activeIndex + delta + filteredItems.length) % filteredItems.length;
+      setActive(filteredItems[next]);
+    },
+    [activeIndex, filteredItems]
+  );
 
   useEffect(() => {
     if (!active) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowRight") goTo(1);
+      if (e.key === "ArrowLeft") goTo(-1);
     };
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
@@ -56,13 +75,15 @@ export function Gallery() {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", onKey);
     };
-  }, [active, closeLightbox]);
+  }, [active, closeLightbox, goTo]);
 
   return (
     <Section
       id="gallery"
       eyebrow="Atelier archive"
       title="A living gallery of handmade romance."
+      subtitle="Curated studies from the atelier—each piece composed by hand for love, celebration, and keepsake."
+      tone="alt"
       className="overflow-hidden"
     >
       <div className="mb-12 flex flex-wrap justify-center gap-2 sm:gap-3" role="tablist" aria-label="Gallery categories">
@@ -93,7 +114,7 @@ export function Gallery() {
               initial={reduced ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={reduced ? undefined : { opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.55, delay: Math.min(index * 0.03, 0.24), ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.55, delay: Math.min(index * 0.03, 0.24), ease: luxuryEase }}
               key={item.src}
               role="button"
               tabIndex={0}
@@ -104,7 +125,7 @@ export function Gallery() {
                   setActive(item);
                 }
               }}
-              className="masonry-item group relative block w-full cursor-pointer overflow-hidden rounded-[1.25rem] text-left shadow-[0_24px_70px_rgba(74,15,31,.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosegold"
+              className="masonry-item group relative block w-full cursor-pointer overflow-hidden rounded-[1.25rem] text-left shadow-[0_24px_70px_rgba(74,15,31,.08)] ring-1 ring-wine/5 transition duration-500 hover:shadow-luxury focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosegold"
               aria-label={`View ${item.name}`}
             >
               <div className={cn("relative overflow-hidden", HEIGHTS[index % HEIGHTS.length])}>
@@ -144,7 +165,7 @@ export function Gallery() {
       )}
 
       <AnimatePresence>
-        {active && (
+        {active && activeIndex >= 0 && (
           <motion.div
             role="dialog"
             aria-modal="true"
@@ -153,7 +174,7 @@ export function Gallery() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35 }}
-            className="fixed inset-0 z-[90] grid place-items-center bg-wine/88 p-4 backdrop-blur-2xl sm:p-6"
+            className="fixed inset-0 z-[90] grid place-items-center bg-wine/90 p-4 backdrop-blur-2xl sm:p-6"
             onClick={closeLightbox}
           >
             <button
@@ -164,11 +185,40 @@ export function Gallery() {
             >
               <X size={18} />
             </button>
+
+            {filteredItems.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  aria-label="Previous image"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goTo(-1);
+                  }}
+                  className="absolute left-3 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-ivory/90 text-wine shadow-lg transition hover:bg-ivory sm:left-6"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Next image"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goTo(1);
+                  }}
+                  className="absolute right-3 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-ivory/90 text-wine shadow-lg transition hover:bg-ivory sm:right-6"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </>
+            )}
+
             <motion.div
+              key={active.src}
               initial={reduced ? false : { opacity: 0, scale: 0.96, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={reduced ? undefined : { opacity: 0, scale: 0.98, y: 12 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.5, ease: luxuryEase }}
               className="relative flex h-[min(82vh,900px)] w-full max-w-6xl flex-col overflow-hidden rounded-[1.5rem] bg-charcoal shadow-luxury-lg"
               onClick={(e) => e.stopPropagation()}
             >
@@ -178,7 +228,7 @@ export function Gallery() {
               <div className="flex flex-col gap-4 border-t border-ivory/10 bg-gradient-to-t from-wine to-wine/95 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
                 <div>
                   <p className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-champagne/90">
-                    {active.category.replace("-", " ")}
+                    {active.category.replace("-", " ")} · {activeIndex + 1} / {filteredItems.length}
                   </p>
                   <h3 className="mt-1 font-cormorant text-2xl text-ivory sm:text-3xl">{active.name}</h3>
                 </div>
@@ -189,7 +239,7 @@ export function Gallery() {
                   className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-ivory px-6 py-3.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-wine transition hover:bg-champagne"
                 >
                   <MessageCircle size={16} aria-hidden />
-                  Inquire with {brand.name}
+                  Speak with the atelier
                 </a>
               </div>
             </motion.div>
