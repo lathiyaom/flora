@@ -8,12 +8,14 @@ import {
   MessageCircle,
   Sparkles
 } from "lucide-react";
+import { brand } from "@/data/brand";
+import { whatsappUrl } from "@/lib/whatsapp";
 
 export const navItems = [
   { label: "Story", href: "#story" },
   { label: "Collections", href: "#collections" },
   { label: "Gallery", href: "#gallery" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Commissions", href: "#commissions" },
   { label: "Contact", href: "#contact" }
 ];
 
@@ -27,71 +29,64 @@ export const collections = [
   {
     name: "Romantic Whispers",
     slug: "romantic-whispers",
-    price: "From $95",
     tone: "Soft blush declarations for anniversaries, proposals, and everyday devotion.",
     image: "/images/collections/099f26e7ac091b04ac87c30b96c55afa.jpg"
   },
   {
     name: "Eternal Vows",
     slug: "eternal-vows",
-    price: "From $240",
     tone: "Wedding bouquets and keepsakes crafted to outlive the aisle.",
     image: "/images/wedding/68bc7315d093c80c2189fe8ab2de47aa.jpg"
   },
   {
     name: "Opulent Legacy",
     slug: "opulent-legacy",
-    price: "From $380",
     tone: "Sculptural statement arrangements for collectors and grand gestures.",
     image: "/images/collections/130e9522700e1d8f644e26551ac0a4b2.jpg"
   },
   {
     name: "Tender Moments",
     slug: "tender-moments",
-    price: "From $48",
     tone: "Mini bouquets for desks, bedside tables, and quiet reminders.",
     image: "/images/collections/2d72ea8f1fd10a7567fd34cbf15a6f24.jpg"
   },
   {
     name: "Creator's Studio",
     slug: "creators-studio",
-    price: "From $62",
     tone: "DIY kits with curated materials, palettes, and guided rituals.",
     image: "/images/collections/4858439501fbb2d53d94cb204234a423.jpg"
   },
   {
     name: "Timeless Gestures",
     slug: "timeless-gestures",
-    price: "Custom",
     tone: "Corporate editions for launches, client love, and executive gifting.",
     image: "/images/corporate/035f8a925ccb65eb3abff27ec368a96f.jpg"
   },
   {
     name: "Festival of Hearts",
     slug: "festival-of-hearts",
-    price: "From $120",
     tone: "Seasonal romance in wine, blush, champagne, and rose gold.",
     image: "/images/valentines-day/0b7f2f932986c81e565da7d69831666b.jpg"
   },
   {
     name: "Bespoke Creations",
     slug: "bespoke-creations",
-    price: "By commission",
     tone: "One-of-one bouquets composed around a memory, color, or love story.",
     image: "/images/collections/4b0d1dcc2b5011a0a93817dd4ce4c232.jpg"
   }
 ];
 
-export const gallery = [
-  ["/images/collections/4b7f18fd6f3082e6964f22b510983348.jpg", "A blush rose held in permanent bloom"],
-  ["/images/collections/4bebbaed489330a5dbe4e43bdd07d1bb.jpg", "Champagne stems arranged like sculpture"],
-  ["/images/collections/500cc932e86045579b27f4c0b796c33a.jpg", "A bridal heirloom made by hand"],
-  ["/images/collections/5b1e51e610ca7a3f6b07c23405b67c3f.jpg", "Wine red petals for evening gifting"],
-  ["/images/valentines-day/335537dc9e68a0302d744d48637fafb3.jpg", "Mini gestures with maximal feeling"],
-  ["/images/valentines-day/4097982f80c4545456459fcb25bdc1e1.jpg", "Studio light on handmade texture"],
-  ["/images/valentines-day/59315cf2d82ffca396fbdea6aa4a44d8.jpg", "A keepsake bouquet wrapped in ivory"],
-  ["/images/valentines-day/905dd639db017f29bc39e9bb8411e67d.jpg", "Seasonal romance, softly composed"]
-] as const;
+/** Gallery alt captions — used by generate-media-list.js */
+export const galleryCaptions: Record<string, string> = {
+  "/images/collections/4b7f18fd6f3082e6964f22b510983348.jpg": "A blush rose held in permanent bloom",
+  "/images/collections/4bebbaed489330a5dbe4e43bdd07d1bb.jpg": "Champagne stems arranged like sculpture",
+  "/images/collections/500cc932e86045579b27f4c0b796c33a.jpg": "A bridal heirloom made by hand",
+  "/images/collections/5b1e51e610ca7a3f6b07c23405b67c3f.jpg": "Wine red petals for evening gifting",
+  "/images/valentines-day/335537dc9e68a0302d744d48637fafb3.jpg": "Mini gestures with maximal feeling",
+  "/images/valentines-day/4097982f80c4545456459fcb25bdc1e1.jpg": "Studio light on handmade texture",
+  "/images/valentines-day/59315cf2d82ffca396fbdea6aa4a44d8.jpg": "A keepsake bouquet wrapped in ivory",
+  "/images/valentines-day/905dd639db017f29bc39e9bb8411e67d.jpg": "Seasonal romance, softly composed"
+};
 
 export const why = [
   { icon: Infinity, title: "Forever Blooming", body: "Each petal is shaped to keep its form, color, and meaning long after the day has passed." },
@@ -129,11 +124,27 @@ export const process = [
   { title: "Gift Ceremony", body: "The finished piece is wrapped, protected, and prepared for its first unforgettable moment.", image: "/images/corporate/9b99751e42cac6b852bd3925f876c5c4.jpg" }
 ];
 
-export const tiers = [
-  { name: "Petite Keepsake", price: "Inquire", detail: "Mini bouquets, single-stem gestures, and desk sculptures.", best: "Everyday romance" },
-  { name: "Signature Bouquet", price: "Inquire", detail: "Layered arrangements with premium wrapping and message card.", best: "Anniversaries and gifting" },
-  { name: "Heirloom Atelier", price: "By Commission", detail: "Wedding, proposal, and legacy pieces with deeper customization.", best: "Milestone love" },
-  { name: "Maison Bespoke", price: "Atelier Quote", detail: "Private commissions, corporate suites, and large-volume gifting.", best: "One-of-one stories" }
+export const commissions = [
+  {
+    name: "Petite Keepsake",
+    detail: "Mini bouquets, single-stem gestures, and desk sculptures made to order.",
+    best: "Everyday romance"
+  },
+  {
+    name: "Signature Bouquet",
+    detail: "Layered arrangements with premium wrapping and a handwritten message card.",
+    best: "Anniversaries and gifting"
+  },
+  {
+    name: "Heirloom Atelier",
+    detail: "Wedding, proposal, and legacy pieces composed with deeper personalization.",
+    best: "Milestone love"
+  },
+  {
+    name: "Maison Bespoke",
+    detail: "Private commissions, corporate suites, and considered large-volume gifting.",
+    best: "One-of-one stories"
+  }
 ];
 
 export const faqs = [
@@ -152,7 +163,7 @@ export const instagram = [
 ];
 
 export const socials = [
-  { label: "WhatsApp", href: "https://wa.me/9724639134", icon: MessageCircle },
-  { label: "Instagram", href: "https://www.instagram.com/flora_.bouquets_/?hl=en", icon: Sparkles },
-  { label: "Atelier", href: "mailto:hello@eternalpetal.com", icon: Gem }
+  { label: "WhatsApp", href: whatsappUrl(`Hello ${brand.name}! I would love to start a conversation.`), icon: MessageCircle },
+  { label: "Instagram", href: brand.instagram, icon: Sparkles },
+  { label: "Atelier", href: `mailto:${brand.email}`, icon: Gem }
 ];

@@ -8,17 +8,18 @@ const OUTPUT_FILE = path.join(__dirname, 'data', 'media-list.ts');
 const EXT_IMAGES = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg'];
 const EXT_VIDEOS = ['.mp4', '.webm', '.ogg', '.mov'];
 
-// Known description mapping from original design
-const KNOWN_DESCRIPTIONS = {
-  "/images/collections/4b7f18fd6f3082e6964f22b510983348.jpg": "A blush rose held in permanent bloom",
-  "/images/collections/4bebbaed489330a5dbe4e43bdd07d1bb.jpg": "Champagne stems arranged like sculpture",
-  "/images/collections/500cc932e86045579b27f4c0b796c33a.jpg": "A bridal heirloom made by hand",
-  "/images/collections/5b1e51e610ca7a3f6b07c23405b67c3f.jpg": "Wine red petals for evening gifting",
-  "/images/valentines-day/335537dc9e68a0302d744d48637fafb3.jpg": "Mini gestures with maximal feeling",
-  "/images/valentines-day/4097982f80c4545456459fcb25bdc1e1.jpg": "Studio light on handmade texture",
-  "/images/valentines-day/59315cf2d82ffca396fbdea6aa4a44d8.jpg": "A keepsake bouquet wrapped in ivory",
-  "/images/valentines-day/905dd639db017f29bc39e9bb8411e67d.jpg": "Seasonal romance, softly composed"
-};
+// Sync captions from data/site.ts galleryCaptions
+let KNOWN_DESCRIPTIONS = {};
+try {
+  const sitePath = path.join(__dirname, 'data', 'site.ts');
+  const siteSource = fs.readFileSync(sitePath, 'utf8');
+  const block = siteSource.match(/export const galleryCaptions[^=]*=\s*(\{[\s\S]*?\});/);
+  if (block) {
+    KNOWN_DESCRIPTIONS = Function(`"use strict"; return (${block[1]});`)();
+  }
+} catch (_) {
+  KNOWN_DESCRIPTIONS = {};
+}
 
 function cleanName(filename, category) {
   const ext = path.extname(filename);

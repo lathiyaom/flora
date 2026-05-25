@@ -1,12 +1,16 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Play, MessageCircle, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, MessageCircle, Play, X } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { brand } from "@/data/brand";
+import type { MediaItem } from "@/data/media-list";
 import { mediaItems } from "@/data/media-list";
+import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { galleryInquiry } from "@/lib/whatsapp";
 import { MediaPlayer } from "@/components/ui/media-player";
 import { Section } from "@/components/ui/section";
-import { socials } from "@/data/site";
+import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
   { id: "all", label: "All" },
@@ -15,18 +19,18 @@ const CATEGORIES = [
   { id: "valentines-day", label: "Valentine's" },
   { id: "corporate", label: "Corporate" },
   { id: "instagram", label: "Instagram" },
-  { id: "videos", label: "Videos" }
+  { id: "videos", label: "Films" }
 ] as const;
 
+const HEIGHTS = ["h-[380px]", "h-[460px]", "h-[520px]", "h-[400px]"] as const;
+
 export function Gallery() {
-  const [activeTab, setActiveTab] = useState<string>("all");
-  const [active, setActive] = useState<(typeof mediaItems)[number] | null>(null);
-  const [visibleCount, setVisibleCount] = useState<number>(12);
+  const reduced = usePrefersReducedMotion();
+  const [activeTab, setActiveTab] = useState("all");
+  const [active, setActive] = useState<MediaItem | null>(null);
+  const [visibleCount, setVisibleCount] = useState(12);
 
-  const whatsappLink = socials.find(s => s.label === "WhatsApp")?.href || "https://wa.me/9724639134";
-
-  // Filter items
-  const filteredItems = mediaItems.filter(item => {
+  const filteredItems = mediaItems.filter((item) => {
     if (activeTab === "all") return true;
     if (activeTab === "videos") return item.type === "video";
     return item.category === activeTab;
@@ -34,146 +38,158 @@ export function Gallery() {
 
   const visibleItems = filteredItems.slice(0, visibleCount);
 
-  const handleLoadMore = () => {
-    setVisibleCount(prev => prev + 12);
-  };
-
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);
-    setVisibleCount(12); // Reset count when tab changes
+    setVisibleCount(12);
   };
 
+  const closeLightbox = useCallback(() => setActive(null), []);
+
+  useEffect(() => {
+    if (!active) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [active, closeLightbox]);
+
   return (
-    <Section id="gallery" eyebrow="Interactive gallery" title="A living archive of handmade romance.">
-      {/* Category Tabs */}
-      <div className="mb-10 flex flex-wrap justify-center gap-2 sm:gap-3">
+    <Section
+      id="gallery"
+      eyebrow="Atelier archive"
+      title="A living gallery of handmade romance."
+      className="overflow-hidden"
+    >
+      <div className="mb-12 flex flex-wrap justify-center gap-2 sm:gap-3" role="tablist" aria-label="Gallery categories">
         {CATEGORIES.map((tab) => (
           <button
             key={tab.id}
             type="button"
+            role="tab"
+            aria-selected={activeTab === tab.id}
             onClick={() => handleTabChange(tab.id)}
-            className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+            className={cn(
+              "rounded-full px-5 py-2.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] transition-all duration-500",
               activeTab === tab.id
                 ? "bg-wine text-ivory shadow-luxury"
-                : "bg-white/60 text-wine/70 hover:bg-wine/10 border border-wine/10"
-            }`}
+                : "border border-wine/10 bg-white/50 text-wine/70 hover:border-wine/20 hover:bg-white/80"
+            )}
           >
             {tab.label}
           </button>
         ))}
       </div>
 
-      {/* Masonry Grid */}
-      <div className="masonry min-h-[400px]">
+      <div className="masonry min-h-[320px]">
         <AnimatePresence mode="popLayout">
           {visibleItems.map((item, index) => (
-            <motion.button
-              layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.5 }}
-              type="button"
+            <motion.div
+              layout={!reduced}
+              initial={reduced ? false : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduced ? undefined : { opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.55, delay: Math.min(index * 0.03, 0.24), ease: [0.22, 1, 0.36, 1] }}
               key={item.src}
+              role="button"
+              tabIndex={0}
               onClick={() => setActive(item)}
-              className="masonry-item group relative block w-full overflow-hidden rounded-[1.2rem] text-left shadow-[0_20px_60px_rgba(74,15,31,.09)] cursor-pointer"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setActive(item);
+                }
+              }}
+              className="masonry-item group relative block w-full cursor-pointer overflow-hidden rounded-[1.25rem] text-left shadow-[0_24px_70px_rgba(74,15,31,.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosegold"
+              aria-label={`View ${item.name}`}
             >
-              <div className={index % 3 === 0 ? "relative h-[440px]" : index % 3 === 1 ? "relative h-[340px]" : "relative h-[520px]"}>
-                <MediaPlayer 
-                  src={item.src} 
-                  type={item.type} 
-                  alt={item.name} 
-                  className="transition duration-700 group-hover:scale-105" 
-                  autoPlay={true}
-                  muted={true}
-                  loop={true}
-                  playsInline={true}
-                  controls={false}
+              <div className={cn("relative overflow-hidden", HEIGHTS[index % HEIGHTS.length])}>
+                <MediaPlayer
+                  src={item.src}
+                  type={item.type}
+                  alt={item.name}
+                  mode="thumbnail"
+                  sizes="(min-width:1280px) 25vw, (min-width:768px) 33vw, 50vw"
                 />
-                
-                {/* Video Play Icon Indicator overlay */}
                 {item.type === "video" && (
-                  <div className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-wine/80 text-ivory backdrop-blur-md shadow-md">
-                    <Play size={14} fill="currentColor" className="ml-0.5" />
+                  <div className="pointer-events-none absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-wine/85 text-ivory backdrop-blur-md">
+                    <Play size={14} fill="currentColor" className="ml-0.5" aria-hidden />
                   </div>
                 )}
-
-                <div className="absolute inset-0 bg-gradient-to-t from-wine/70 via-wine/5 to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
-                <p className="absolute bottom-5 left-5 right-5 translate-y-3 font-dm text-2xl text-ivory opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                <div className="absolute inset-0 bg-gradient-to-t from-wine/75 via-wine/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                <p className="absolute bottom-5 left-5 right-5 translate-y-2 font-cormorant text-2xl text-ivory opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">
                   {item.name}
                 </p>
               </div>
-            </motion.button>
+            </motion.div>
           ))}
         </AnimatePresence>
       </div>
 
-      {/* Load More Button */}
       {visibleCount < filteredItems.length && (
-        <div className="mt-12 flex justify-center">
+        <div className="mt-14 flex justify-center">
           <button
             type="button"
-            onClick={handleLoadMore}
-            className="group flex items-center gap-2 rounded-full border border-wine/20 bg-white/40 px-8 py-3.5 text-xs font-semibold uppercase tracking-wider text-wine transition-all duration-300 cursor-pointer hover:bg-wine hover:text-ivory hover:border-wine hover:shadow-luxury"
+            onClick={() => setVisibleCount((n) => n + 12)}
+            className="group inline-flex items-center gap-2 rounded-full border border-wine/15 bg-white/45 px-8 py-3.5 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-wine transition duration-500 hover:border-wine hover:bg-wine hover:text-ivory hover:shadow-luxury"
           >
-            <span>View More Creations</span>
-            <ChevronDown size={14} className="transition-transform group-hover:translate-y-0.5" />
+            View more creations
+            <ChevronDown size={14} className="transition group-hover:translate-y-0.5" aria-hidden />
           </button>
         </div>
       )}
 
-      {/* Lightbox Modal */}
       <AnimatePresence>
         {active && (
-          <motion.div 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            exit={{ opacity: 0 }} 
-            className="fixed inset-0 z-[90] grid place-items-center bg-wine/85 p-5 backdrop-blur-xl" 
-            onClick={() => setActive(null)}
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${active.name} — gallery view`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            className="fixed inset-0 z-[90] grid place-items-center bg-wine/88 p-4 backdrop-blur-2xl sm:p-6"
+            onClick={closeLightbox}
           >
-            <button 
-              type="button" 
-              aria-label="Close gallery" 
-              className="absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-full bg-ivory text-wine hover:scale-105 transition-transform duration-300 cursor-pointer"
+            <button
+              type="button"
+              aria-label="Close gallery"
+              className="absolute right-4 top-4 z-10 grid h-12 w-12 place-items-center rounded-full bg-ivory text-wine transition hover:scale-105 sm:right-6 sm:top-6"
+              onClick={closeLightbox}
             >
               <X size={18} />
             </button>
-            <motion.div 
-              layoutId={active.src} 
-              className="relative h-[80vh] w-full max-w-5xl overflow-hidden rounded-[1.5rem] bg-charcoal/95 flex flex-col justify-end" 
-              onClick={(event) => event.stopPropagation()}
+            <motion.div
+              initial={reduced ? false : { opacity: 0, scale: 0.96, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={reduced ? undefined : { opacity: 0, scale: 0.98, y: 12 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="relative flex h-[min(82vh,900px)] w-full max-w-6xl flex-col overflow-hidden rounded-[1.5rem] bg-charcoal shadow-luxury-lg"
+              onClick={(e) => e.stopPropagation()}
             >
-              <MediaPlayer 
-                src={active.src} 
-                type={active.type} 
-                alt={active.name} 
-                autoPlay={true}
-                controls={true}
-                muted={active.type === "video" ? false : true} // Play audio if it's a video!
-                loop={true}
-                playsInline={true}
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-wine/95 via-wine/70 to-transparent p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="relative min-h-0 flex-1">
+                <MediaPlayer src={active.src} type={active.type} alt={active.name} mode="player" sizes="100vw" />
+              </div>
+              <div className="flex flex-col gap-4 border-t border-ivory/10 bg-gradient-to-t from-wine to-wine/95 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-widest text-champagne">
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-champagne/90">
                     {active.category.replace("-", " ")}
-                  </span>
-                  <h3 className="mt-1 font-dm text-2xl sm:text-3xl text-ivory leading-tight">
-                    {active.name}
-                  </h3>
+                  </p>
+                  <h3 className="mt-1 font-cormorant text-2xl text-ivory sm:text-3xl">{active.name}</h3>
                 </div>
-                
                 <a
-                  href={`${whatsappLink}?text=${encodeURIComponent(
-                    `Hi! I am inquiring about pricing and availability for this creation: "${active.name}" (${active.src})`
-                  )}`}
+                  href={galleryInquiry(active.name, active.src)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2.5 rounded-full bg-ivory px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-wine shadow-lg hover:bg-champagne hover:scale-[1.02] transition-all duration-300 shrink-0"
+                  className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-ivory px-6 py-3.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-wine transition hover:bg-champagne"
                 >
-                  <MessageCircle size={16} fill="currentColor" />
-                  <span>Inquire with Atelier</span>
+                  <MessageCircle size={16} aria-hidden />
+                  Inquire with {brand.name}
                 </a>
               </div>
             </motion.div>
