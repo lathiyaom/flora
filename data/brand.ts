@@ -9,9 +9,9 @@ export const brand = {
   description:
     "Luxury handmade pipe cleaner bouquets as eternal floral art for love, weddings, gifting, corporate gestures, and keepsake moments.",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://lathiyaom.github.io/flora",
-  email: "hello@florabouquets.com",
-  phoneDisplay: "+972 463 9134",
-  whatsappE164: "9724639134",
+  email: "contact.florabouquets@gmail.com",
+  phoneDisplay: "+91 97246 39134 · +91 7600 426 330",
+  whatsappE164: "7600 426 330",
   instagram: "https://www.instagram.com/flora_.bouquets_/?hl=en",
   locale: "en_US",
   ogImage: "/flora/images/hero/4f724c847668ae8c650f471476361a5f.jpg",
