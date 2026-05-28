@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PUBLIC_DIR = path.join(__dirname, 'public');
-const BASE_PATH = '/flora';
+const BASE_PATH = '';
 const IMAGES_DIR = path.join(PUBLIC_DIR, 'images');
 const OUTPUT_FILE = path.join(__dirname, 'data', 'media-list.ts');
 
