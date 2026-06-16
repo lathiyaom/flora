@@ -5,15 +5,15 @@ export function whatsappUrl(message: string): string {
 }
 
 export function collectionInquiry(name: string): string {
-  return whatsappUrl(`Hi! I would love to learn more about the "${name}" collection.`);
+  return whatsappUrl(`Hi! I want to learn more about the '${name}' collection.`);
 }
 
 export function commissionInquiry(name: string): string {
-  return whatsappUrl(`Hi! I would like to begin a commission conversation for "${name}".`);
+  return whatsappUrl(`Hi! I want to start a custom order for '${name}'.`);
 }
 
 export function galleryInquiry(name: string, src: string): string {
-  return whatsappUrl(`Hi! I am interested in this creation: "${name}" (${src})`);
+  return whatsappUrl(`Hi! I am interested in this piece: '${name}' (${src})`);
 }
 
 export function corporateInquiry(fields: {

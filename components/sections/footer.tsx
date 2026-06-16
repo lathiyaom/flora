@@ -1,5 +1,5 @@
 import { brand } from "@/data/brand";
-import { collections, navItems, socials } from "@/data/site";
+import { collections, navItems, socials, iconPaths } from "@/data/site";
 
 export function Footer() {
   return (
@@ -8,7 +8,7 @@ export function Footer() {
         <div>
           <p className="font-cormorant text-5xl tracking-tight text-champagne md:text-6xl">{brand.name}</p>
           <p className="mt-5 max-w-md leading-relaxed text-ivory/65">
-            Eternal flowers for the gestures that deserve to remain. Handmade, poetic, and composed with quiet luxury.
+            Lasting flowers for the gifts that should stay. Handmade, gentle, and quiet.
           </p>
         </div>
         <nav aria-label="Footer">
@@ -33,7 +33,18 @@ export function Footer() {
         <p>© {new Date().getFullYear()} {brand.name}. All rights reserved.</p>
         <div className="flex flex-wrap gap-5">
           {socials.map((item) => (
-            <a key={item.label} href={item.href} className="transition hover:text-champagne" rel="noopener noreferrer">
+            <a 
+              key={item.label} 
+              href={item.href} 
+              className="transition hover:text-champagne flex items-center gap-2" 
+              rel="noopener noreferrer"
+              target={item.label !== "Atelier" ? "_blank" : undefined}
+            >
+              {item.iconPath ? (
+                <img src={item.iconPath} alt={item.label} className="h-5 w-5" />
+              ) : item.icon ? (
+                <item.icon size={18} />
+              ) : null}
               {item.label}
             </a>
           ))}

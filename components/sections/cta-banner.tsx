@@ -18,17 +18,17 @@ export function CtaBanner() {
             className="pointer-events-none absolute -bottom-20 left-1/4 h-48 w-48 rounded-full bg-champagne/15 blur-3xl"
             aria-hidden
           />
-          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.38em] text-champagne/90">Begin your story</p>
+          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.38em] text-champagne/90">Start your story</p>
           <h2 id="cta-heading" className="mt-4 max-w-3xl font-cormorant text-4xl leading-[0.95] md:text-6xl">
             Ready to gift something that never fades?
           </h2>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-ivory/75 md:text-lg">
-            Share the moment, palette, and feeling. The {brand.name} atelier will compose a keepsake made to be kept.
+            Tell us the moment, colors, and feeling. The studio will make a keepsake made to stay.
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             {whatsapp && <MagneticButton href={whatsapp.href}>Start on WhatsApp</MagneticButton>}
             <MagneticButton href="#corporate" variant="light">
-              Corporate enquiry
+              Work enquiry
             </MagneticButton>
           </div>
         </Reveal>

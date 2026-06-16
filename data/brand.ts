@@ -1,13 +1,13 @@
 /**
- * Single source of truth for brand identity, SEO, and contact.
- * Set NEXT_PUBLIC_SITE_URL in production (e.g. your GitHub Pages or custom domain).
+ * Main brand identity, SEO, and contact info.
+ * Set NEXT_PUBLIC_SITE_URL in production (for GitHub Pages or a custom domain).
  */
 export const brand = {
   name: "flora_.bouquets_",
   legalName: "Flora Bouquets Atelier",
-  tagline: "Handmade eternal floral art",
+  tagline: "Handmade lasting floral art",
   description:
-    "Luxury handmade pipe cleaner bouquets as eternal floral art for love, weddings, gifting, corporate gestures, and keepsake moments.",
+    "Handmade pipe cleaner bouquets that last for love, weddings, gifts, work events, and keepsakes.",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://lathiyaom.github.io/flora",
   email: "contact.florabouquets@gmail.com",
   phoneDisplay: "+91 97246 39134 · +91 7600 426 330",

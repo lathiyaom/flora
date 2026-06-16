@@ -17,7 +17,7 @@ export function Testimonials() {
     <Section
       eyebrow="Love stories"
       title="Kept by the people who gave them."
-      subtitle="Real gestures, remembered long after the day."
+      subtitle="Real gifts, remembered long after."
       tone="ivory"
     >
       <div className="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">

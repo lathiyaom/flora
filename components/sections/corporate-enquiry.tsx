@@ -29,7 +29,7 @@ export function CorporateEnquiry() {
     <Section
       id="corporate"
       eyebrow="Corporate and bulk enquiry"
-      title="Gifting, elevated into memory."
+      title="Gifting made to stay."
       className="bg-wine text-ivory"
       inverted
     >
@@ -38,9 +38,9 @@ export function CorporateEnquiry() {
           <LuxuryImage src={imagePaths.customizer} alt="Bespoke bouquet commission preview" sizes="(min-width:1024px) 45vw, 100vw" />
           <div className="absolute inset-0 bg-gradient-to-t from-wine/85 via-wine/20 to-transparent" />
           <div className="absolute bottom-8 left-8 right-8">
-            <p className="font-cormorant text-3xl leading-snug md:text-4xl">Commission your palette</p>
+            <p className="font-cormorant text-3xl leading-snug md:text-4xl">Create your color set</p>
             <p className="mt-3 max-w-md text-sm leading-relaxed text-ivory/72">
-              Share occasion, scale, and feeling—we compose a bespoke suite for weddings, launches, and client love.
+              Tell us the occasion, quantity, and feeling—we will make a custom set for weddings, launches, and client gifts.
             </p>
           </div>
         </div>
@@ -63,7 +63,7 @@ export function CorporateEnquiry() {
               name="message"
               required
               className="min-h-36 resize-none rounded-2xl border border-ivory/12 bg-ivory/8 px-4 py-3 text-ivory placeholder:text-ivory/35 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne"
-              placeholder="Tell us about the feeling, palette, deadline, and delivery city."
+              placeholder="Tell us the feeling, colors, deadline, and delivery city."
             />
           </label>
           <button
@@ -71,11 +71,11 @@ export function CorporateEnquiry() {
             className="mt-2 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-ivory px-7 py-3 text-sm font-semibold text-wine transition duration-300 hover:bg-champagne focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne"
           >
             <Send size={16} aria-hidden />
-            Send via WhatsApp
+            Send in WhatsApp
           </button>
           {status === "ready" && (
             <p className="text-sm text-champagne/90" role="status">
-              Your enquiry opens in WhatsApp—send the message to reach the {brand.name} atelier.
+              Your enquiry opens in WhatsApp—send the message to reach the {brand.name} studio.
             </p>
           )}
         </form>

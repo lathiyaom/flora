@@ -13,7 +13,7 @@ export function FAQ() {
   const baseId = useId();
 
   return (
-    <Section eyebrow="FAQ" title="Details, softly answered.">
+    <Section eyebrow="FAQ" title="Questions answered simply.">
       <div className="mx-auto max-w-4xl divide-y divide-wine/10">
         {faqs.map(([question, answer], index) => {
           const isOpen = open === index;

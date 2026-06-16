@@ -7,7 +7,7 @@ export function WhyEternalPetal() {
   return (
     <Section
       eyebrow={`Why ${brand.name}`}
-      title="Because some gestures should not fade."
+      title="Because some gifts should not fade."
       className="relative overflow-hidden bg-wine text-ivory"
       inverted
     >

@@ -20,7 +20,7 @@ const CATEGORIES = [
   { id: "valentines-day", label: "Valentine's" },
   { id: "corporate", label: "Corporate" },
   { id: "instagram", label: "Instagram" },
-  { id: "videos", label: "Films" }
+  { id: "videos", label: "Videos" }
 ] as const;
 
 const HEIGHTS = ["h-[380px]", "h-[460px]", "h-[520px]", "h-[400px]"] as const;
@@ -80,9 +80,9 @@ export function Gallery() {
   return (
     <Section
       id="gallery"
-      eyebrow="Atelier archive"
-      title="A living gallery of handmade romance."
-      subtitle="Curated studies from the atelier—each piece composed by hand for love, celebration, and keepsake."
+      eyebrow="Studio archive"
+      title="A gallery of handmade love."
+      subtitle="Careful studies from the studio—each piece made by hand for love, celebration, and keepsakes."
       tone="alt"
       className="overflow-hidden"
     >
@@ -239,7 +239,7 @@ export function Gallery() {
                   className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-ivory px-6 py-3.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-wine transition hover:bg-champagne"
                 >
                   <MessageCircle size={16} aria-hidden />
-                  Speak with the atelier
+                  Talk to the studio
                 </a>
               </div>
             </motion.div>

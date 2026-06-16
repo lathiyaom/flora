@@ -6,7 +6,7 @@ import { Section } from "@/components/ui/section";
 
 export function InstagramFeed() {
   return (
-    <Section eyebrow="Atelier notes" title="A glimpse from the studio." className="bg-beige/50">
+    <Section eyebrow="Studio notes" title="A peek inside the studio." className="bg-beige/50">
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {instagram.map((src, index) => (
           <Reveal key={src} delay={index * 0.05} as="article" className="group relative aspect-[9/14] overflow-hidden rounded-[1.35rem] shadow-[0_20px_60px_rgba(74,15,31,.08)]">

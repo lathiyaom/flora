@@ -10,8 +10,8 @@ export function SignatureCollections() {
     <Section
       id="collections"
       eyebrow="Signature collections"
-      title="Compositions for every kind of forever."
-      subtitle="Each collection is a mood—composed by hand and made to order for the feeling you want to keep."
+      title="Designs for every kind of forever."
+      subtitle="Each collection is a mood—made by hand and ordered for the feeling you want to keep."
       tone="ivory"
     >
       <div className="snap-carousel -mx-5 flex gap-5 overflow-x-auto px-5 pb-3 md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 xl:grid-cols-4">
@@ -56,7 +56,7 @@ export function SignatureCollections() {
                   rel="noopener noreferrer"
                   className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-rosegold transition hover:text-wine"
                 >
-                  Commission
+                  Order
                 </a>
               </div>
             </div>

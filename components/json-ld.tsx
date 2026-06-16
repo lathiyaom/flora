@@ -28,7 +28,7 @@ export function JsonLd() {
         addressCountry: brand.address.country
       },
       areaServed: "Worldwide",
-      knowsAbout: ["Handmade bouquets", "Pipe cleaner floral art", "Wedding keepsakes", "Bespoke commissions"]
+      knowsAbout: ["Handmade bouquets", "Pipe cleaner floral art", "Wedding keepsakes", "Custom orders"]
     },
     {
       "@type": "WebSite",

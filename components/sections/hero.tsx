@@ -63,8 +63,7 @@ export function Hero() {
               transition={{ delay: 0.08, duration: 1.1, ease: luxuryEase }}
               className="font-cormorant text-balance text-[clamp(2.75rem,8vw,7.25rem)] font-medium leading-[0.9] tracking-[-0.03em] text-wine"
             >
-              Love, held in{" "}
-              <span className="italic text-rosegold/90">bloom</span> forever.
+              Love kept in <span className="italic text-rosegold/90">bloom</span> forever.
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -72,8 +71,8 @@ export function Hero() {
               transition={{ delay: 0.2, duration: 0.95, ease: luxuryEase }}
               className="mt-7 max-w-xl text-lg leading-[1.75] text-charcoal/70 md:text-xl"
             >
-              {brand.name} transforms humble pipe cleaners into sculptural bouquets—tender, collectible, and composed for
-              the moments love refuses to let fade.
+              {brand.name} turns simple pipe cleaners into sculpted bouquets—tender, keepsake pieces for moments you want
+              to remember.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -81,9 +80,9 @@ export function Hero() {
               transition={{ delay: 0.32, duration: 0.85, ease: luxuryEase }}
               className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center"
             >
-              <MagneticButton href="#collections">Explore Collections</MagneticButton>
+              <MagneticButton href="#collections">Explore collections</MagneticButton>
               <MagneticButton href="#contact" variant="light">
-                Begin a commission
+                Start a custom order
               </MagneticButton>
             </motion.div>
           </div>

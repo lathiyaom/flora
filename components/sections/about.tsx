@@ -8,19 +8,19 @@ export function About() {
   return (
     <Section
       id="story"
-      eyebrow="From our hands to your heart"
-      title="A bouquet should remember what the day felt like."
-      subtitle="Slow craft, intimate detail, and compositions made to hold meaning—not just beauty."
+      eyebrow="From our hands to yours"
+      title="A bouquet should remember how the day felt."
+      subtitle="Slow craft, close detail, and designs made to keep meaning, not just look nice."
     >
       <div className="grid items-center gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
         <Reveal className="space-y-7 text-lg leading-[1.8] text-charcoal/72">
           <p>
-            {brand.name} begins where fresh flowers end: with the desire to keep a feeling alive. Every stem is twisted,
-            softened, curved, and composed by hand until a simple material becomes something intimate and enduring.
+            {brand.name} starts where fresh flowers stop: to keep a feeling alive. Every stem is twisted, softened,
+            curved, and shaped by hand until simple material becomes something lasting and personal.
           </p>
           <p>
-            The work is slow by design. We study color like memory, shape each petal like a gesture, and wrap every
-            bouquet as if it were already part of someone&apos;s story.
+            The work is slow on purpose. We study color like memory, shape each petal like a small gift, and wrap every
+            bouquet like it already belongs to someone.
           </p>
           <div className="luxury-line mt-10" />
           <div className="grid grid-cols-3 gap-6 pt-4">

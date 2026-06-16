@@ -150,10 +150,14 @@ export function SiteChrome({ children }: { children: ReactNode }) {
           aria-label="Chat on WhatsApp"
         >
           <span className="grid h-14 w-14 shrink-0 place-items-center">
-            {(() => {
-              const Icon = whatsapp.icon;
-              return <Icon size={22} />;
-            })()}
+            {whatsapp.iconPath ? (
+              <img src={whatsapp.iconPath} alt="WhatsApp" className="h-6 w-6" />
+            ) : whatsapp.icon ? (
+              (() => {
+                const Icon = whatsapp.icon;
+                return <Icon size={22} />;
+              })()
+            ) : null}
           </span>
           <span className="max-w-0 overflow-hidden whitespace-nowrap pr-0 text-xs font-semibold uppercase tracking-[0.2em] opacity-0 transition-all duration-500 group-hover:max-w-[9rem] group-hover:pr-5 group-hover:opacity-100">
             Atelier chat

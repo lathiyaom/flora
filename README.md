@@ -1,194 +1,179 @@
-# EternalPetal Luxury Web Showroom
+# EternalPetal Web Showroom
 
-A premium, fast, and responsive Next.js static website for **EternalPetal**—a brand showcasing luxury handmade pipe cleaner floral bouquets.
+This is a fast Next.js static website for **EternalPetal**. It shows handmade pipe cleaner flower bouquets.
 
-This project is built using React, Next.js, Tailwind CSS (or custom styling config), and Framer Motion, presenting an editorial, high-end aesthetic.
+It uses React, Next.js, Tailwind CSS, and Framer Motion.
 
 ---
 
 ## Table of Contents
-1. [Quick Start & Commands](#quick-start--commands)
-2. [Image Asset Directory Structure](#image-asset-directory-structure)
-3. [Image Specifications & Guidelines](#image-specifications--guidelines)
-4. [Configuring Images in Code (`data/site.ts`)](#configuring-images-in-code-datasitets)
-5. [Automatic Graceful Image Fallbacks](#automatic-graceful-image-fallbacks)
-6. [Project Structure](#project-structure)
+1. Quick start
+2. Image folders
+3. Image sizes and formats
+4. Change image paths in `data/site.ts`
+5. Image fallback behavior
+6. Project structure
 
 ---
 
-## Quick Start & Commands
+## Quick start
 
-To set up the development server or build the website locally:
-
-### 1. Install Dependencies
+### 1. Install dependencies
 ```bash
 npm install
 ```
 
-### 2. Run Local Development Server
+### 2. Run the site locally
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000/flora](http://localhost:3000/flora) in your browser to view the site locally.
+Open `http://localhost:3000/flora` in your browser.
 
-### 3. Build the Static Site for GitHub Pages
+### 3. Build the static site
 ```bash
 npm run build
 ```
-This command compiles the Next.js application and exports the site as a fully-optimized static bundle in the `out/` directory.
+The site files will be saved to the `out/` folder.
 
-> Note: Because this site is deployed to GitHub Pages under `https://lathiyaom.github.io/flora/`, the app uses `basePath: '/flora'` in `next.config.ts` and the generated static output must be published from the `out/` folder.
-
-### 4. Preview the Static Export
-To test the exported static site locally, you can use a simple static server:
+### 4. Preview the static site
 ```bash
 npx serve out
 ```
 
 ---
 
-## GitHub Pages Deployment
+## GitHub Pages
+
 1. Push to the `main` branch.
-2. Ensure GitHub Pages source is set to **GitHub Actions** in `Settings > Pages`.
-3. The workflow in `.github/workflows/deploy.yml` will build the site and deploy the `out/` folder.
-4. Your live URL will be:
+2. Set GitHub Pages source to GitHub Actions.
+3. The workflow in `.github/workflows/deploy.yml` builds and deploys the `out/` folder.
+4. Your live site will be:
    `https://lathiyaom.github.io/flora/`
 
-> Important: GitHub Pages must deploy from the exported static output. If it is serving the repo root instead, it will show `README.md` rather than your website.
+> GitHub Pages must serve the `out/` folder. If it serves the repo root, it will show `README.md` instead of the site.
 
 ---
 
-## Image Asset Directory Structure
+## Image folders
 
-All image assets are stored in the static public directory: `public/images/`.
+Put image files in `public/images/`.
 
-To update the images shown on the website, save your new files in their respective folders under `public/images/` using the structure below:
+Use this folder layout:
 
 ```text
 public/
 └── images/
     ├── hero/
-    │   └── eternalpetal-hero.webp         # Main background image for the top section
+    │   └── eternalpetal-hero.webp
     ├── story/
-    │   └── artisan-hands.webp             # Image showing the craft/hands in the about section
+    │   └── artisan-hands.webp
     ├── collections/
-    │   ├── romantic-whispers.webp         # Image for the Romantic Whispers collection card
-    │   ├── opulent-legacy.webp           # Image for the Opulent Legacy collection card
-    │   ├── tender-moments.webp            # Image for the Tender Moments collection card
-    │   ├── creators-studio.webp           # Image for the Creator's Studio DIY kit card
-    │   ├── bespoke-creations.webp         # Image for the Bespoke Creations commission card
-    │   └── bespoke-customizer.webp        # Card background for custom bouquet selection
+    │   ├── romantic-whispers.webp
+    │   ├── opulent-legacy.webp
+    │   ├── tender-moments.webp
+    │   ├── creators-studio.webp
+    │   ├── bespoke-creations.webp
+    │   └── bespoke-customizer.webp
     ├── wedding/
-    │   └── eternal-vows.webp              # Image for the Eternal Vows wedding collection card
+    │   └── eternal-vows.webp
     ├── corporate/
-    │   └── timeless-gestures.webp         # Image for the Timeless Gestures corporate card
+    │   └── timeless-gestures.webp
     ├── valentines-day/
-    │   └── festival-of-hearts.webp        # Image for the Festival of Hearts seasonal card
+    │   └── festival-of-hearts.webp
     ├── gallery/
-    │   ├── petal-study-01.webp            # High-resolution gallery image 1
-    │   ├── petal-study-02.webp            # High-resolution gallery image 2
-    │   ├── ...
-    │   └── petal-study-08.webp            # High-resolution gallery image 8
+    │   ├── petal-study-01.webp
+    │   ├── petal-study-02.webp
+    │   └── petal-study-08.webp
     ├── testimonials/
-    │   ├── amelia.webp                    # Customer photo (Amelia R.)
-    │   ├── maya-julien.webp               # Customer photo (Maya & Julien)
-    │   └── noor.webp                      # Customer photo (Noor S.)
+    │   ├── amelia.webp
+    │   ├── maya-julien.webp
+    │   └── noor.webp
     ├── process/
-    │   ├── palette-ritual.webp            # Image illustrating Step 1: Palette Ritual
-    │   ├── petal-sculpting.webp           # Image illustrating Step 2: Petal Sculpting
-    │   ├── bouquet-composition.webp       # Image illustrating Step 3: Bouquet Composition
-    │   └── gift-ceremony.webp             # Image illustrating Step 4: Gift Ceremony
+    │   ├── palette-ritual.webp
+    │   ├── petal-sculpting.webp
+    │   ├── bouquet-composition.webp
+    │   └── gift-ceremony.webp
     └── instagram/
-        ├── reel-01.webp                   # Atelier snapshot image 1 (portrait aspect ratio)
-        ├── reel-02.webp                   # Atelier snapshot image 2 (portrait aspect ratio)
-        ├── reel-03.webp                   # Atelier snapshot image 3 (portrait aspect ratio)
-        └── reel-04.webp                   # Atelier snapshot image 4 (portrait aspect ratio)
+        ├── reel-01.webp
+        ├── reel-02.webp
+        ├── reel-03.webp
+        └── reel-04.webp
 ```
 
 ---
 
-## Image Specifications & Guidelines
+## Image sizes and formats
 
-To maintain the luxurious editorial aesthetic and quick page loading times, please follow these guidelines when preparing your images:
+Use WebP for images when possible.
 
-### 1. Recommended Formats
-- **Primary recommendation**: Use **WebP** (`.webp`) for all images. WebP provides exceptional compression with smaller file sizes than JPEG or PNG without losing visible details.
-- **Alternatives**: Standard `.jpg` / `.jpeg` (for photography) and `.png` (only if transparency/alpha channel is required). If you use a non-WebP format, make sure to update the file extensions in `data/site.ts`.
+If you need another format:
+- `.jpg` or `.jpeg` for photos
+- `.png` only for images with transparency
 
-### 2. Dimension and Aspect Ratio Chart
+If you change the file extension, update the path in `data/site.ts`.
 
-| Section / Component | Recommended File Path | Target Dimensions | Aspect Ratio | Visual Style Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| **Hero Background** | `hero/eternalpetal-hero.webp` | `1920 x 1080 px` | 16:9 | Landscape. Soft background details, works well with the dark wine/rose overlay gradient. |
-| **Atelier Story** | `story/artisan-hands.webp` | `1000 x 1200 px` | 5:6 or 3:4 | Vertical Portrait. Close-up photo showing hands shaping flowers or raw materials. |
-| **Collections** | `collections/*.webp` | `800 x 1000 px` | 4:5 | Vertical. Showcases individual bouquets isolated or on curated editorial backgrounds. |
-| **Gallery Studies** | `gallery/petal-study-*.webp` | `800 x 1000 px` | 4:5 or 3:4 | Vertical. Crisp, detailed macro shots of petals, wrapping, or unique angles. |
-| **Creation Process** | `process/*.webp` | `600 x 800 px` | 3:4 | Vertical. Shows step-by-step close-up shots of materials, shaping, wrapping, and finishing. |
-| **Atelier Snapshots** | `instagram/reel-*.webp` | `900 x 1400 px` | 9:14 | Tall Portrait. Aesthetic snapshots from the studio, structured like mobile screenshots or stories. |
-| **Testimonial Avatars** | `testimonials/*.webp` | `300 x 300 px` | 1:1 (Square) | Rounded / circle crop. Simple portrait or clean headshot of clients/creators. |
+### Recommended image sizes
 
-### 3. File Size & Optimization Tips
-- **Hero & Story**: Keep files under **300 KB** to prevent slow Initial Page Load (LCP).
-- **Collections & Gallery**: Keep files under **150 KB** each.
-- **Process & Testimonial Avatars**: Keep files under **60 KB** each.
-- **Tools for compression**: You can use free web tools like [Squoosh](https://squoosh.app) or [TinyPNG](https://tinypng.com) to compress your WebP/JPEG files before uploading.
+- Hero and story images: about `1920 x 1080` or `1000 x 1200`
+- Collections and gallery images: about `800 x 1000`
+- Process images: about `600 x 800`
+- Testimonial avatars: about `300 x 300`
+
+### File size tips
+
+- Keep hero and story images under `300 KB`.
+- Keep collections and gallery images under `150 KB`.
+- Keep process and testimonial images under `60 KB`.
+- Use compression tools like [Squoosh](https://squoosh.app) or [TinyPNG](https://tinypng.com).
 
 ---
 
-## Configuring Images in Code (`data/site.ts`)
+## Change image paths in code
 
-The website dynamic structure maps images via a central configurations file: `data/site.ts`. 
+The site uses `data/site.ts` for image paths.
 
-If you rename files, change file formats, or want to swap images, open [data/site.ts](file:///e:/flora/data/site.ts) and edit the paths.
+If you rename a file or change its format, update the matching path in `data/site.ts`.
 
-### Examples:
+### Example: change the hero image
 
-#### A. Replacing the Hero Image
-If you want to use a JPEG file named `new-hero-bg.jpg` instead of the default `.webp` file, save the file to `public/images/hero/new-hero-bg.jpg` and update the mapping in [data/site.ts](file:///e:/flora/data/site.ts):
 ```typescript
-// data/site.ts (around line 20)
 export const imagePaths = {
-  hero: "/flora/images/hero/new-hero-bg.jpg", // updated path
+  hero: "/flora/images/hero/new-hero-bg.jpg",
   story: "/flora/images/story/artisan-hands.webp",
   customizer: "/flora/images/collections/bespoke-customizer.webp"
 };
 ```
 
-#### B. Updating Collections
-To change a collection image, edit the matching `image` key inside the `collections` array:
+### Example: change a collection image
+
 ```typescript
-// data/site.ts (around line 26)
 export const collections = [
   {
     name: "Romantic Whispers",
     slug: "romantic-whispers",
-    price: "From $95",
-    tone: "Soft blush declarations for anniversaries, proposals, and everyday devotion.",
-    image: "/flora/images/collections/my-new-rose-photo.webp" // updated path
-  },
-  // ...
+    tone: "Soft pink bouquets for anniversaries, proposals, and daily love.",
+    image: "/flora/images/collections/my-new-rose-photo.webp"
+  }
 ];
 ```
 
 ---
 
-## Automatic Graceful Image Fallbacks
+## Image fallback behavior
 
-If a specific image file is not found or fails to load, the site uses a custom `<LocalImage>` component (located in [local-image.tsx](file:///e:/flora/components/ui/local-image.tsx)) to protect the layout.
+If an image file is missing or does not load, the site uses a custom `<LocalImage>` component in `components/ui/local-image.tsx`.
 
-Instead of showing a broken browser image icon, the component automatically displays a beautiful, smooth **CSS gradient mesh background** (`beige`/`rosegold`/`wine` palette) with a subtle glowing aura overlay. This ensures your website always looks premium, even during content updates!
+Instead of showing a broken image icon, it shows a smooth gradient background and keeps the page layout stable.
 
 ---
 
-## Project Structure
+## Project structure
 
-A brief map of key folders and files in the repository:
-
-- [`app/`](file:///e:/flora/app): Next.js App Router root layout (`layout.tsx`) and home page view (`page.tsx`).
-- [`components/`](file:///e:/flora/components):
-  - [`sections/`](file:///e:/flora/components/sections): Landing page modules (Hero, About/Story, Collections, Process, Testimonials, FAQ, Gallery, Footer, Contact form, Instagram Snapshots).
-  - [`ui/`](file:///e:/flora/components/ui): Reusable premium interface components (buttons, layout wrappers, fallback images).
-- [`data/site.ts`](file:///e:/flora/data/site.ts): The central text copy, feature lists, pricing packages, FAQs, and image path mappings.
-- [`public/`](file:///e:/flora/public): Contains public-facing static assets (images directory).
-- [`next.config.ts`](file:///e:/flora/next.config.ts): Configuration settings for Next.js build and optimization.
-- [`tsconfig.json`](file:///e:/flora/tsconfig.json): TypeScript compilation parameters.
+- `app/`: Next.js app layout and home page.
+- `components/`: UI parts for the page.
+  - `sections/`: page sections like Hero, About, Gallery, FAQ, and Contact.
+  - `ui/`: reusable UI components.
+- `data/site.ts`: text, lists, and image paths.
+- `public/`: static assets such as images.
+- `next.config.ts`: Next.js settings.
+- `tsconfig.json`: TypeScript settings.

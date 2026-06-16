@@ -11,8 +11,8 @@ export function Commissions() {
     <Section
       id="commissions"
       eyebrow="Commissions"
-      title="Every piece is composed for your story."
-      subtitle="Each bouquet is handmade to order. Share the occasion, palette, and feeling—the atelier will guide you from first conversation to finished keepsake."
+      title="Every piece is made for your story."
+      subtitle="Each bouquet is made to order. Share the occasion, colors, and feeling—the studio will guide you from the first talk to the finished keepsake."
       tone="alt"
     >
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -61,7 +61,7 @@ export function Commissions() {
         ))}
       </div>
       <Reveal className="mt-12">
-        <MagneticButton href="#contact">Speak with the atelier</MagneticButton>
+        <MagneticButton href="#contact">Talk to the studio</MagneticButton>
       </Reveal>
     </Section>
   );
