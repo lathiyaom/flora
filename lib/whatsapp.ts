@@ -16,6 +16,10 @@ export function galleryInquiry(name: string, src: string): string {
   return whatsappUrl(`Hi! I am interested in this piece: '${name}' (${src})`);
 }
 
+export function petitCharmInquiry(name = "Petit Charm"): string {
+  return whatsappUrl(`Hi! I want to order a '${name}'.`);
+}
+
 export function corporateInquiry(fields: {
   name: string;
   email: string;

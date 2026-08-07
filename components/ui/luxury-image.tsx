@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type LuxuryImageProps = {
@@ -12,6 +12,8 @@ type LuxuryImageProps = {
   priority?: boolean;
   sizes?: string;
   reveal?: boolean;
+  /** cover crops to fill; contain shows the full image (lightbox) */
+  fit?: "cover" | "contain";
 };
 
 export function LuxuryImage({
@@ -21,10 +23,16 @@ export function LuxuryImage({
   imageClassName,
   priority = false,
   sizes = "(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw",
-  reveal = true
+  reveal = true,
+  fit = "cover"
 }: LuxuryImageProps) {
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    setLoaded(false);
+    setFailed(false);
+  }, [src]);
 
   if (failed) {
     return (
@@ -42,8 +50,8 @@ export function LuxuryImage({
   }
 
   return (
-    <div className={cn("relative h-full w-full overflow-hidden", className)}>
-      {!loaded && <div className="absolute inset-0 image-shimmer" aria-hidden />}
+    <div className={cn("relative h-full min-h-[220px] w-full overflow-hidden bg-beige/80", className)}>
+      {!loaded && <div className="absolute inset-0 image-shimmer bg-beige" aria-hidden />}
       <Image
         src={src}
         alt={alt}
@@ -53,12 +61,19 @@ export function LuxuryImage({
         decoding="async"
         sizes={sizes}
         className={cn(
-          "object-cover transition-[opacity,transform] duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)]",
-          reveal && "scale-[1.03] group-hover:scale-105",
+          "transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          fit === "contain" ? "object-contain" : "object-cover",
+          reveal && fit === "cover" && "scale-[1.01] group-hover:scale-[1.04]",
           loaded ? "opacity-100" : "opacity-0",
           imageClassName
         )}
         onLoad={() => setLoaded(true)}
+        ref={(img) => {
+          // Cached images may finish before onLoad attaches — show them anyway.
+          if (img?.complete && img.naturalWidth > 0) {
+            queueMicrotask(() => setLoaded(true));
+          }
+        }}
         onError={() => setFailed(true)}
       />
     </div>

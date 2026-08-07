@@ -10,9 +10,18 @@ type MagneticButtonProps = {
   children: ReactNode;
   variant?: "wine" | "light";
   className?: string;
+  target?: string;
+  rel?: string;
 };
 
-export function MagneticButton({ href, children, variant = "wine", className }: MagneticButtonProps) {
+export function MagneticButton({
+  href,
+  children,
+  variant = "wine",
+  className,
+  target,
+  rel
+}: MagneticButtonProps) {
   const reduced = usePrefersReducedMotion();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -28,6 +37,8 @@ export function MagneticButton({ href, children, variant = "wine", className }: 
   return (
     <motion.a
       href={href}
+      target={target}
+      rel={rel}
       style={style}
       onMouseMove={
         reduced

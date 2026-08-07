@@ -3,10 +3,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronLeft, ChevronRight, MessageCircle, Play, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { brand } from "@/data/brand";
 import type { MediaItem } from "@/data/media-list";
 import { mediaItems } from "@/data/media-list";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { useLenis } from "@/components/providers/smooth-scroll-provider";
 import { galleryInquiry } from "@/lib/whatsapp";
 import { luxuryEase } from "@/lib/motion";
 import { MediaPlayer } from "@/components/ui/media-player";
@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 const CATEGORIES = [
   { id: "all", label: "All" },
   { id: "collections", label: "Collections" },
+  { id: "keychain", label: "Petit Charms" },
   { id: "wedding", label: "Wedding" },
   { id: "valentines-day", label: "Valentine's" },
   { id: "corporate", label: "Corporate" },
@@ -27,6 +28,7 @@ const HEIGHTS = ["h-[380px]", "h-[460px]", "h-[520px]", "h-[400px]"] as const;
 
 export function Gallery() {
   const reduced = usePrefersReducedMotion();
+  const lenis = useLenis();
   const [activeTab, setActiveTab] = useState("all");
   const [active, setActive] = useState<MediaItem | null>(null);
   const [visibleCount, setVisibleCount] = useState(12);
@@ -70,12 +72,14 @@ export function Gallery() {
       if (e.key === "ArrowLeft") goTo(-1);
     };
     document.body.style.overflow = "hidden";
+    lenis?.stop();
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
+      lenis?.start();
       window.removeEventListener("keydown", onKey);
     };
-  }, [active, closeLightbox, goTo]);
+  }, [active, closeLightbox, goTo, lenis]);
 
   return (
     <Section
@@ -107,14 +111,13 @@ export function Gallery() {
       </div>
 
       <div className="masonry min-h-[320px]">
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence mode="sync">
           {visibleItems.map((item, index) => (
             <motion.div
-              layout={!reduced}
-              initial={reduced ? false : { opacity: 0, y: 20 }}
+              initial={reduced ? false : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={reduced ? undefined : { opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.55, delay: Math.min(index * 0.03, 0.24), ease: luxuryEase }}
+              exit={reduced ? undefined : { opacity: 0 }}
+              transition={{ duration: 0.4, delay: Math.min(index * 0.025, 0.18), ease: luxuryEase }}
               key={item.src}
               role="button"
               tabIndex={0}
@@ -125,7 +128,7 @@ export function Gallery() {
                   setActive(item);
                 }
               }}
-              className="masonry-item group relative block w-full cursor-pointer overflow-hidden rounded-[1.25rem] text-left shadow-[0_24px_70px_rgba(74,15,31,.08)] ring-1 ring-wine/5 transition duration-500 hover:shadow-luxury focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosegold"
+              className="masonry-item group relative block w-full cursor-pointer overflow-hidden rounded-[1.25rem] text-left shadow-[0_24px_70px_rgba(74,15,31,.08)] ring-1 ring-wine/5 transition duration-500 hover:shadow-luxury hover:ring-wine/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosegold"
               aria-label={`View ${item.name}`}
             >
               <div className={cn("relative overflow-hidden", HEIGHTS[index % HEIGHTS.length])}>
@@ -141,10 +144,12 @@ export function Gallery() {
                     <Play size={14} fill="currentColor" className="ml-0.5" aria-hidden />
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-wine/75 via-wine/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <p className="absolute bottom-5 left-5 right-5 translate-y-2 font-cormorant text-2xl text-ivory opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                  {item.name}
-                </p>
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-wine/80 via-wine/35 to-transparent px-4 pb-4 pt-12">
+                  <p className="font-cormorant text-xl leading-tight text-ivory sm:text-2xl">{item.name}</p>
+                  <p className="mt-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-champagne/80">
+                    {item.category === "keychain" ? "Petit Charms" : item.category.replace(/-/g, " ")}
+                  </p>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -219,13 +224,15 @@ export function Gallery() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={reduced ? undefined : { opacity: 0, scale: 0.98, y: 12 }}
               transition={{ duration: 0.5, ease: luxuryEase }}
-              className="relative flex h-[min(82vh,900px)] w-full max-w-6xl flex-col overflow-hidden rounded-[1.5rem] bg-charcoal shadow-luxury-lg"
+              className="relative flex max-h-[min(90vh,960px)] w-full max-w-6xl flex-col overflow-hidden rounded-[1.5rem] bg-charcoal shadow-luxury-lg"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="relative min-h-0 flex-1">
-                <MediaPlayer src={active.src} type={active.type} alt={active.name} mode="player" sizes="100vw" />
+              <div className="relative flex min-h-[40vh] w-full flex-1 items-center justify-center bg-charcoal sm:min-h-[52vh]">
+                <div className="absolute inset-0">
+                  <MediaPlayer src={active.src} type={active.type} alt={active.name} mode="player" sizes="100vw" />
+                </div>
               </div>
-              <div className="flex flex-col gap-4 border-t border-ivory/10 bg-gradient-to-t from-wine to-wine/95 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+              <div className="relative z-10 flex shrink-0 flex-col gap-4 border-t border-ivory/10 bg-wine p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
                 <div>
                   <p className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-champagne/90">
                     {active.category.replace("-", " ")} · {activeIndex + 1} / {filteredItems.length}

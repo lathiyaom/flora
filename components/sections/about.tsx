@@ -32,14 +32,18 @@ export function About() {
             ))}
           </div>
         </Reveal>
-        <Reveal delay={0.08} className="relative min-h-[min(520px,70vh)] overflow-hidden rounded-[2rem] shadow-luxury">
+        <Reveal
+          delay={0.08}
+          className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] shadow-luxury sm:min-h-[480px] lg:min-h-[520px]"
+        >
           <LuxuryImage
             src={imagePaths.story}
             alt="Artisan hands shaping handmade flowers"
             sizes="(min-width: 1024px) 55vw, 100vw"
+            className="absolute inset-0 h-full min-h-0 w-full"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-wine/25 via-transparent to-transparent" />
-          <div className="glass-panel absolute bottom-6 left-6 right-6 rounded-2xl p-6 md:p-7">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-wine/30 via-transparent to-transparent" />
+          <div className="glass-panel absolute bottom-6 left-6 right-6 z-10 rounded-2xl p-6 md:p-7">
             <p className="font-cormorant text-2xl leading-snug text-wine md:text-3xl">
               Each petal is a small act of devotion.
             </p>

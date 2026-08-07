@@ -31,10 +31,11 @@ export function MediaPlayer({
     <LuxuryImage
       src={src}
       alt={alt}
-      className={className}
+      className={cn(mode === "player" && "bg-charcoal", className)}
       priority={priority}
       sizes={sizes}
-      imageClassName={cn(mode === "player" && "scale-100")}
+      reveal={mode !== "player"}
+      fit={mode === "player" ? "contain" : "cover"}
     />
   );
 }

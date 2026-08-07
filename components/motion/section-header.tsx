@@ -54,11 +54,11 @@ export function SectionHeader({ eyebrow, title, subtitle, className, inverted }:
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.9, ease: luxuryEase }}
-      className={cn("mb-12 max-w-3xl md:mb-16", className)}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.6, ease: luxuryEase }}
+      className={cn("mb-12 max-w-3xl md:mb-14", className)}
     >
       {content}
     </motion.div>

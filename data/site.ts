@@ -17,6 +17,7 @@ export const iconPaths = {
 export const navItems = [
   { label: "Story", href: "#story" },
   { label: "Collections", href: "#collections" },
+  { label: "Charms", href: "#charms" },
   { label: "Gallery", href: "#gallery" },
   { label: "Commissions", href: "#commissions" },
   { label: "Contact", href: "#contact" }
@@ -152,6 +153,7 @@ export const commissions = [
 
 export const faqs = [
   ["Are these real flowers?", "They are handmade pipe cleaner flowers shaped to look like plants and last for years."],
+  ["Do you make small pipe cleaner pieces?", "Yes. Petit Charms are tiny handmade blooms and keepsakes—keychains, bag charms, desk minis, and other small gifts made from pipe cleaners."],
   ["Can I add my own images later?", "Yes. Add your files to the right folder in public/images and use the same file names shown in data/site.ts."],
   ["Do you make wedding bouquets?", "Yes. Eternal Vows is made for bridal bouquets, bridesmaids, corsages, and ceremony gifts."],
   ["Can I request a custom color palette?", "Yes. Bespoke Creations can match a color, dress, invitation, room, or memory."],

@@ -45,12 +45,14 @@ function cleanName(filename, category) {
 
   // Handle standard MD5/hash filenames
   if (/^[a-f0-9]{32}(_720w)?$/.test(nameWithoutExt) || /^[a-f0-9]{32}/.test(nameWithoutExt)) {
-    // Generate description based on category
-    const catName = category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    const CATEGORY_LABELS = { keychain: 'Petit Charm' };
+    const catName =
+      CATEGORY_LABELS[category] ||
+      category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
     if (ext === '.mp4' || ext === '.webm') {
       return `Atelier Video: Handcrafting ${catName}`;
     }
-    return `Eternal Petal: ${catName} Creation`;
+    return `Flora: ${catName} Creation`;
   }
 
   // Fallback for general filenames

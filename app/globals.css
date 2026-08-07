@@ -240,7 +240,8 @@ textarea:focus-visible {
 }
 
 .link-luxury:hover::after,
-.link-luxury:focus-visible::after {
+.link-luxury:focus-visible::after,
+.link-luxury[aria-current="location"]::after {
   transform: scaleX(1);
   transform-origin: left;
 }

@@ -7,7 +7,7 @@ export const brand = {
   legalName: "Flora Bouquets Atelier",
   tagline: "Handmade lasting floral art",
   description:
-    "Handmade pipe cleaner bouquets that last for love, weddings, gifts, work events, and keepsakes.",
+    "Handmade pipe cleaner bouquets and petit charms—tiny lasting blooms for love, weddings, gifts, work events, and keepsakes.",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://lathiyaom.github.io/flora",
   email: "contact.florabouquets@gmail.com",
   phoneDisplay: "+91 97246 39134 · +91 7600 426 330",

@@ -7,13 +7,15 @@ import { brand } from "@/data/brand";
 import { navItems, socials } from "@/data/site";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { useLenis } from "@/components/providers/smooth-scroll-provider";
 import { luxuryEase } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-const SECTION_IDS = ["story", "collections", "gallery", "commissions", "contact"];
+const SECTION_IDS = ["story", "collections", "charms", "gallery", "commissions", "contact"];
 
 export function SiteChrome({ children }: { children: ReactNode }) {
   const reduced = usePrefersReducedMotion();
+  const lenis = useLenis();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
   const [open, setOpen] = useState(false);
@@ -39,10 +41,20 @@ export function SiteChrome({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
+    if (open) lenis?.stop();
+    else lenis?.start();
     return () => {
       document.body.style.overflow = "";
+      lenis?.start();
     };
-  }, [open]);
+  }, [open, lenis]);
+
+  const goTo = (href: string) => {
+    setOpen(false);
+    if (href.startsWith("#")) {
+      lenis?.scrollTo(href);
+    }
+  };
 
   const whatsapp = socials.find((s) => s.label === "WhatsApp");
 
@@ -67,6 +79,10 @@ export function SiteChrome({ children }: { children: ReactNode }) {
         >
           <a
             href="#"
+            onClick={(event) => {
+              event.preventDefault();
+              lenis?.scrollTo(0, { immediate: false });
+            }}
             className="font-cormorant text-2xl font-semibold tracking-tight text-wine transition hover:opacity-80 md:text-3xl"
           >
             {brand.name}
@@ -76,6 +92,10 @@ export function SiteChrome({ children }: { children: ReactNode }) {
               <a
                 key={item.href}
                 href={item.href}
+                onClick={(event) => {
+                  event.preventDefault();
+                  goTo(item.href);
+                }}
                 className={cn(
                   "link-luxury text-sm font-medium tracking-wide transition-colors duration-300",
                   item.isActive ? "text-wine" : "text-charcoal/60 hover:text-wine"
@@ -88,6 +108,10 @@ export function SiteChrome({ children }: { children: ReactNode }) {
           </div>
           <a
             href="#corporate"
+            onClick={(event) => {
+              event.preventDefault();
+              goTo("#corporate");
+            }}
             className="hidden rounded-full border border-wine/12 bg-white/40 px-5 py-2.5 text-sm font-medium text-wine backdrop-blur-md transition duration-300 hover:border-wine/25 hover:bg-wine hover:text-ivory md:inline-flex"
           >
             Bespoke Enquiry
@@ -110,7 +134,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.4, ease: luxuryEase }}
+              transition={{ duration: 0.35, ease: luxuryEase }}
               className="overflow-hidden border-t border-champagne/50 bg-ivory/95 backdrop-blur-xl md:hidden"
             >
               <div className="px-5 pb-8 pt-2">
@@ -118,7 +142,10 @@ export function SiteChrome({ children }: { children: ReactNode }) {
                   <a
                     key={item.href}
                     href={item.href}
-                    onClick={() => setOpen(false)}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      goTo(item.href);
+                    }}
                     className={cn(
                       "block border-b border-wine/8 py-4 text-base font-medium",
                       item.isActive ? "text-wine" : "text-charcoal/75"
@@ -129,7 +156,10 @@ export function SiteChrome({ children }: { children: ReactNode }) {
                 ))}
                 <a
                   href="#corporate"
-                  onClick={() => setOpen(false)}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    goTo("#corporate");
+                  }}
                   className="mt-4 block rounded-full bg-wine py-3.5 text-center text-sm font-semibold text-ivory"
                 >
                   Bespoke Enquiry
@@ -139,7 +169,6 @@ export function SiteChrome({ children }: { children: ReactNode }) {
           )}
         </AnimatePresence>
       </header>
-      {!reduced && <DesktopCursor />}
       <main id="main">{children}</main>
       {whatsapp && (
         <a
@@ -151,7 +180,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
         >
           <span className="grid h-14 w-14 shrink-0 place-items-center">
             {whatsapp.iconPath ? (
-              <img src={whatsapp.iconPath} alt="WhatsApp" className="h-6 w-6" />
+              <img src={whatsapp.iconPath} alt="" className="h-6 w-6" />
             ) : whatsapp.icon ? (
               (() => {
                 const Icon = whatsapp.icon;
@@ -165,41 +194,5 @@ export function SiteChrome({ children }: { children: ReactNode }) {
         </a>
       )}
     </>
-  );
-}
-
-function DesktopCursor() {
-  const [points, setPoints] = useState<{ x: number; y: number; id: number }[]>([]);
-
-  useEffect(() => {
-    if (window.matchMedia("(pointer: coarse)").matches) return;
-    let id = 0;
-    const move = (event: MouseEvent) => {
-      const next = { x: event.clientX, y: event.clientY, id: id++ };
-      setPoints((items) => [...items.slice(-4), next]);
-    };
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
-
-  return (
-    <div className="pointer-events-none fixed inset-0 z-[60] hidden md:block" aria-hidden>
-      {points.map((point, index) => (
-        <motion.span
-          key={point.id}
-          initial={{ opacity: 0.24, scale: 0.12 }}
-          animate={{ opacity: 0, scale: 1.2 }}
-          transition={{ duration: 0.7, ease: luxuryEase }}
-          className="absolute h-1.5 w-1.5 rounded-full bg-rosegold/75"
-          style={{
-            left: point.x,
-            top: point.y,
-            translateX: "-50%",
-            translateY: "-50%",
-            filter: `blur(${index * 0.3}px)`
-          }}
-        />
-      ))}
-    </div>
   );
 }

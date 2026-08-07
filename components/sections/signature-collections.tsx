@@ -29,9 +29,6 @@ export function SignatureCollections() {
                 sizes="(min-width:1280px) 25vw, (min-width:768px) 50vw, 85vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-wine/65 via-wine/5 to-transparent" />
-              <span className="absolute left-5 top-5 rounded-full border border-ivory/30 bg-wine/50 px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-ivory backdrop-blur-md">
-                Collection
-              </span>
             </div>
             <div className="p-6 md:p-7">
               <div className="flex items-start justify-between gap-3">
@@ -45,7 +42,7 @@ export function SignatureCollections() {
               <p className="mt-4 min-h-[4.5rem] text-sm leading-relaxed text-charcoal/65">{item.tone}</p>
               <div className="mt-6 flex items-center justify-between gap-4 border-t border-wine/8 pt-5">
                 <a
-                  href="#contact"
+                  href="#gallery"
                   className="link-luxury text-sm font-semibold text-wine"
                 >
                   Explore

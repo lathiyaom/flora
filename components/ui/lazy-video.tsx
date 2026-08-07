@@ -57,11 +57,11 @@ export function LazyVideo({
   }
 
   return (
-    <div ref={ref} className={cn("relative h-full w-full overflow-hidden", className)}>
+    <div ref={ref} className={cn("relative flex h-full w-full items-center justify-center overflow-hidden bg-charcoal", className)}>
       <video
         src={src}
         poster={poster}
-        className="h-full w-full object-cover"
+        className="max-h-full max-w-full object-contain"
         autoPlay={autoPlayInPlayer && !reduced}
         controls
         muted={false}

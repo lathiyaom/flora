@@ -1,24 +1,15 @@
-# EternalPetal Image Folders
+# Flora Image Folders
 
 Drop your final images into these folders and keep the same file names referenced in `data/site.ts`.
 
-Recommended files:
+## Folders
 
-- `hero/eternalpetal-hero.webp`
-- `story/artisan-hands.webp`
-- `collections/romantic-whispers.webp`
-- `collections/opulent-legacy.webp`
-- `collections/tender-moments.webp`
-- `collections/creators-studio.webp`
-- `collections/bespoke-creations.webp`
-- 
-- `collections/bespoke-customizer.webp`
-- `wedding/eternal-vows.webp`
-- `corporate/timeless-gestures.webp`
-- `valentines-day/festival-of-hearts.webp`
-- `gallery/petal-study-01.webp` through `gallery/petal-study-08.webp`
-- `testimonials/amelia.webp`, `maya-julien.webp`, `noor.webp`
-- `process/palette-ritual.webp`, `petal-sculpting.webp`, `bouquet-composition.webp`, `gift-ceremony.webp`
-- `instagram/reel-01.webp` through `instagram/reel-04.webp`
+- `hero/` — hero and OG images
+- `story/` — about section
+- `collections/` — signature collection cards and gallery
+- `keychain/` — Petit Charms photos (small pipe-cleaner pieces: keychains, bag charms, desk minis, and more)
+- `wedding/`, `valentines-day/`, `corporate/`, `instagram/`, `gallery/` — category archives
+
+After adding images, drop files into `public/images/keychain/` and run `npm run dev` so `generate-media-list.js` refreshes the Gallery and Petit Charms section.
 
 Use `.webp` when possible. If you prefer `.jpg` or `.png`, update the paths in `data/site.ts`.

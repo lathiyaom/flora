@@ -6,7 +6,7 @@ import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { cn } from "@/lib/utils";
 
 const variants: Variants = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0, y: 18 },
   visible: { opacity: 1, y: 0 }
 };
 
@@ -18,7 +18,7 @@ type RevealProps = {
   as?: "div" | "section" | "article";
 };
 
-export function Reveal({ children, className, delay = 0, duration = 0.85, as = "div" }: RevealProps) {
+export function Reveal({ children, className, delay = 0, duration = 0.6, as = "div" }: RevealProps) {
   const reduced = usePrefersReducedMotion();
   const Component = motion[as];
 
@@ -30,9 +30,9 @@ export function Reveal({ children, className, delay = 0, duration = 0.85, as = "
     <Component
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "-60px", amount: 0.15 }}
       variants={variants}
-      transition={{ delay, duration, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ delay: Math.min(delay, 0.24), duration, ease: [0.22, 1, 0.36, 1] }}
       className={cn(className)}
     >
       {children}
