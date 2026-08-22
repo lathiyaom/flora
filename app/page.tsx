@@ -4,6 +4,7 @@ import { SiteChrome } from "@/components/site-chrome";
 import { About } from "@/components/sections/about";
 import { AtelierMarquee } from "@/components/sections/atelier-marquee";
 import { Hero } from "@/components/sections/hero";
+import { RealFlowerBouquets } from "@/components/sections/real-flower-bouquets";
 import { PetitCharms } from "@/components/sections/petit-charms";
 import { SignatureCollections } from "@/components/sections/signature-collections";
 import { WhyEternalPetal } from "@/components/sections/why-eternalpetal";
@@ -38,6 +39,7 @@ export default function Home() {
       <JsonLd />
       <Hero />
       <AtelierMarquee />
+      <RealFlowerBouquets />
       <About />
       <SignatureCollections />
       <PetitCharms />

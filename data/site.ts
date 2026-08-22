@@ -16,6 +16,7 @@ export const iconPaths = {
 
 export const navItems = [
   { label: "Story", href: "#story" },
+  { label: "Real Flowers", href: "#real-flowers" },
   { label: "Collections", href: "#collections" },
   { label: "Charms", href: "#charms" },
   { label: "Gallery", href: "#gallery" },
@@ -77,6 +78,54 @@ export const collections = [
     slug: "bespoke-creations",
     tone: "One-of-a-kind bouquets made from a memory, color, or love story.",
     image: "/images/collections/4b0d1dcc2b5011a0a93817dd4ce4c232.jpg"
+  },
+  {
+    name: "Garden Gatherings",
+    slug: "garden-gatherings",
+    tone: "Real flower bouquets arranged with the natural movement of a just-picked garden.",
+    image: "/images/real_flowers_buqutes/0eb705004910efa54e401e228901b4cd.jpg"
+  },
+  {
+    name: "Seasonal Stems",
+    slug: "seasonal-stems",
+    tone: "Fresh seasonal flowers selected for color, texture, and the feeling of the moment.",
+    image: "/images/real_flowers_buqutes/11a5df6b4f3a1b618e7ed9c705be19af.jpg"
+  },
+  {
+    name: "Wildflower Notes",
+    slug: "wildflower-notes",
+    tone: "Loose, expressive arrangements that keep the charm of flowers gathered in the open air.",
+    image: "/images/real_flowers_buqutes/12fb08946804443e50788aba6947e3bd.jpg"
+  },
+  {
+    name: "Botanical Ceremony",
+    slug: "botanical-ceremony",
+    tone: "Real blooms for weddings, celebrations, and the photographs you will return to.",
+    image: "/images/real_flowers_buqutes/1ab5583a6bf76de8096fde8a457b0c32.jpg"
+  },
+  {
+    name: "The Flower Table",
+    slug: "the-flower-table",
+    tone: "Centerpieces and statement bunches that bring a room to life without losing softness.",
+    image: "/images/real_flowers_buqutes/24d103b39a024f05f1286e7453e25483.jpg"
+  },
+  {
+    name: "Petal Keepsakes",
+    slug: "petal-keepsakes",
+    tone: "Thoughtful real-flower gifts made for birthdays, thank-yous, and quiet milestones.",
+    image: "/images/real_flowers_buqutes/263e77761b2bdc98e84ca93e2e9aa1ce.jpg"
+  },
+  {
+    name: "Rose Room",
+    slug: "rose-room",
+    tone: "Romantic roses and rich botanical color for gestures that deserve to be remembered.",
+    image: "/images/real_flowers_buqutes/29b5e352f409873798ef38df85f436f7.jpg"
+  },
+  {
+    name: "Morning Bloom",
+    slug: "morning-bloom",
+    tone: "Light, airy flowers for a fresh beginning, a new home, or an ordinary day made special.",
+    image: "/images/real_flowers_buqutes/3142a84c0b3fcddd685f3f4a6197c339.jpg"
   }
 ];
 

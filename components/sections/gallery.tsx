@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
   { id: "all", label: "All" },
+  { id: "real_flowers_buqutes", label: "Real Flowers" },
   { id: "collections", label: "Collections" },
   { id: "keychain", label: "Petit Charms" },
   { id: "wedding", label: "Wedding" },
@@ -227,7 +228,7 @@ export function Gallery() {
               className="relative flex max-h-[min(90vh,960px)] w-full max-w-6xl flex-col overflow-hidden rounded-[1.5rem] bg-charcoal shadow-luxury-lg"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="relative flex min-h-[40vh] w-full flex-1 items-center justify-center bg-charcoal sm:min-h-[52vh]">
+              <div className="relative flex h-[min(60vh,720px)] min-h-[320px] w-full shrink-0 items-center justify-center bg-charcoal sm:min-h-[420px]">
                 <div className="absolute inset-0">
                   <MediaPlayer src={active.src} type={active.type} alt={active.name} mode="player" sizes="100vw" />
                 </div>
